@@ -1,0 +1,1309 @@
+---
+title: "Técnica de análisis no supervisado con K-Means"
+author: Obed Rios Ruíz - Daniel Román Ramírez
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+---
+
+# Contextualización
+
+El aprendizaje supervisado son un conjunto de técnicas que permiten inferir modelos para extraer conocimiento de conjuntos de datos donde a priori se desconoce.
+
+Las técnicas de aprendizaje no supervisado se pueden aplicar sin necesidad de tener los datos etiquetados para el entrenamiento.
+
+Como solo conocemos datos de entrada, pero no existen datos de salida que correspondan con las entradas, sólo se puede describir la estructura de los datos y con ello intentar encontrar algún tipo de organización que simplifique el análisis, por lo que tiene carácter exploratorio.
+
+En efecto se distingue del Aprendizaje supervisado por el hecho de que no hay un conocimiento a priori. En el aprendizaje no supervisado, un conjunto de datos de objetos de entrada es tratado. Así, el aprendizaje no supervisado típicamente trata los objetos de entrada como un conjunto de variables aleatorias, siendo construido un modelo de densidad para el conjunto de datos.
+
+
+El aprendizaje no supervisado se puede usar en conjunto con la Inferencia bayesiana para producir probabilidades condicionales (es decir, aprendizaje supervisado) para cualquiera de las variables aleatorias dadas. 
+
+los modelos de aprendizaje no supervisado son aquellos en los que se interesa en producir una función que se ajuste a una salida deseada obtenida a priori, sino en aumentar el conocimiento de los datos disponibles (y posibles datos futuros), por ejemplo, dando una agrupación de los ejemplos según su similaridad (clustering), o simplificando las estructura de los mismos manteniendo sus características fundamentales (como en reducción de la dimensionalidad).
+
+
+# Desarrollo
+
+Se tiene dos bases de datos que relacionan estudiantes con el consumo de alcohol, y se quiere analizar si existe relación alguna entre el consumo de alcohol y los resultados de las notas académicas. 
+
+La base de datos contiene información social y académica de un grupo de estudiantes de secundaria de edades entre los 15 y 22 años de dos escuelas de portugal
+
+# Fases de desarrollo
+
+- ***Analizar la calidad de los datos*** 
+
+- ***Detectar si existen valores outliers*** 
+
+- ***Entendimiento de datos por medio de visualizaciones***
+
+- ***Entender los datos a través del análisis estadístico univariante y bivariante*** 
+
+- ***Segmentar los datos: K-Means***
+
+- ***Conclusiones e interpretación final***
+
+
+
+![](pipeline.png)
+
+
+# 1. Preparación de los datos
+
+```{r}
+setwd("C:/Users/droma/Universidad EAFIT/Aprendizaje Automático - General/Análisis_No_Supervisado") # Directorio de trabajo
+
+library(readr)
+library(ggplot2)
+library(RColorBrewer)
+library(corrplot)
+library(dplyr)
+
+
+```
+
+
+# Exploración de las bases de datos
+
+A continuación se importarán las bases de datos para el estudio. se procederá a cruzar la información para consolidar y preparar los datos para el análisis exploratiorio y aplicación de análisis no supervisado.
+
+
+
+**Base de datos : student-mat**
+
+Esta base contiene información académica y personal de estudiantes de un colegio de portugal. El dataset contiene 365 registros contenida en 33 variables, distribuidas en 17 categóricas y 16 numéricas.
+
+![](tabla1_mat.png)
+
+
+```{r}
+d1<-read_csv("C:/Users/droma/Universidad EAFIT/Aprendizaje Automático - General/Análisis_No_Supervisado/student-mat.csv")
+
+
+
+
+```
+
+**Dimensión de la base**
+```{r}
+dim(d1)
+```
+
+**Estructura de la base**
+
+```{r}
+str(d1)
+```
+
+Se evidencia que la edad promedio de los estudiantes es de 16 años, el tiempo de estudio promedio es de 2 horas y por lo menos han tenido 6 faltas promedio durante el periodo escolar. 
+
+
+**Resumen de la base**
+```{r}
+summary(d1)
+```
+
+
+**Base de datos : student-por**
+
+
+En este otra base de datos contiene otro grupo de estudiantes de otro colegio de  Portugal, esta contiene 649 registros, distribuidas en 33 variables, en las cuales son 17 categóricas y 16 numéricas. 
+
+![](tabla2_por.png)
+
+```{r}
+d2<-read_csv("C:/Users/droma/Universidad EAFIT/Aprendizaje Automático - General/Análisis_No_Supervisado/student-por.csv")
+
+
+
+```
+
+**Dimensión de la base**
+
+```{r}
+dim(d2)
+```
+
+**Estructura de la base**
+
+```{r}
+str(d2)
+```
+
+**Resumen de la base**
+La información contenida en la base, contiene similitud con respecto a la base incial. la edad promedio de los estudiantes es de 16 años, utilizan 2 horas promedio de estudio y contienen casi 4 en promedio.
+
+```{r}
+summary(d2)
+```
+
+### Unión de las bases de datos
+
+En esta sección se realiza el cruce de información de las dos bases para la consolidación de todos los registros en un solo dataset para el análisis posterior
+
+```{r}
+
+# añadir marca de fichero
+d1$file<-"math"
+d2$file<-"portuguese"
+
+# añadir marca de asignatura
+d1$subject<-"math"
+d2$subject<-"portuguese"
+
+# combinar los dos ficheros
+data<-rbind(d1,d2)
+
+
+```
+
+**Resumen Nueva data**
+
+```{r}
+# resumen data
+dim(data)
+str(data)
+summary(data)
+```
+
+
+## Verificación de datos duplicados
+
+Luedo de haber consolidado toda la información  se verificará la existencia de datos duplicados
+
+```{r}
+nrow(data)
+```
+
+```{r}
+nrow(unique(data))
+```
+
+
+Finalmente se concluye que no hay datos repetidos
+
+
+### Normalizar nombres de las variables
+
+Es importante que las variables del nuevo dataset estén normalizadas con el fin de obtener la información adecuada en la matriz de datos
+
+```{r}
+colnames(data) <- tolower(colnames(data))
+```
+
+
+### Creación de un identificador único por estudiante
+
+Se creará una variable de identificador único  para cada estudiante, esto se hará concatenando ciertas variables las cuales garanterizan la existencia única y exclusiva del estudiante.
+
+```{r}
+data$student_key<-paste(data$school, data$sex, data$age, data$address, data$famsize, data$pstatus, data$medu, data$fedu, data$mjob, data$fjob, data$reason, data$nursery, data$internet, sep="-")
+```
+
+
+### Creación de la variable binaria
+En esta sección se creará una variable binaria que indicará si el estudiante aprobó o nó la materia, es decir, 1 es mayor que 10, o 0 si la nota es inferior a 10
+
+```{r}
+
+data$bing3 <- ifelse(data$g3>=10, 1, 0)
+```
+
+
+Se procede a crear otra variable que indique que si aprueba una asignatura u otra.
+
+```{r}
+data$result <-paste(ifelse(data$g3>=10, "aprueba", "no aprueba"), data$subject, sep=" ")
+```
+
+Posteriormente se crea una variable que mida el consumo de alcohol global por medio de la media ponderada por el número de días.
+
+
+```{r}
+data$alcohol <- round((data$dalc*5 + data$walc*2)/7,2)
+```
+
+Se debe identificar los estudiantes repetidos en dos clases, esto con el fin de evitar desbalance de clases
+
+```{r}
+duplicated_rows <- duplicated(data$student_key)
+data_duplicated <- data[duplicated_rows,]
+nrow(data_duplicated)
+```
+
+
+Se evidencia  382 estudiantes que están en ambos ficheros.
+
+Debido a lo anterior se debe crear una función para informar que los estudiantes existen en las dos asignaturas.
+
+
+```{r}
+add_duplicates_subject <- function(duplicated){
+  
+  #data$school, data$sex, data$age, data$address, data$famsize, data$pstatus, data$medu, data$fedu, data$mjob, data$fjob, data$reason, data$nursery, data$internet
+  
+        rows <- data$school == duplicated$school &
+        data$sex == duplicated$sex &
+        data$age == duplicated$age &
+        data$address == duplicated$address &
+        data$famsize == duplicated$famsize &
+        data$pstatus == duplicated$pstatus &
+        data$medu == duplicated$medu &
+        data$fedu == duplicated$fedu &
+        data$mjob == duplicated$mjob &
+        data$fjob == duplicated$fjob &  
+        data$reason == duplicated$reason &
+        data$nursery == duplicated$nursery &
+        data$internet == duplicated$internet
+        # actualizar asignatura
+        data[rows,"subject"] <<- "math&portuguese"
+}
+```
+
+Se aplica la función a los alumnos que se identificaron como repetidos.
+
+```{r}
+for(i in 1:nrow(data_duplicated)){
+    add_duplicates_subject(data_duplicated[i,])
+}
+```
+
+
+Se guarda la información de los datos 
+
+
+```{r}
+raw_data <- data
+```
+
+
+### Codificación de las variables categóricas
+
+Antes de iniciar un análisis descriptivo se codificarán las variables categóricas para tener un mejor entendimiento del comportamiento de los datos.
+
+```{r}
+data$school <- factor(data$school, labels=c("Gabriel Pereira", "Mousinho da Silveira"))
+
+data$sex <- factor(data$sex, labels=c("female", "male"))
+
+data$address <- factor(data$address, labels=c("rural", "urban"))
+
+data$famsize <- factor(data$famsize, labels=c("greater than 3","less or equal to 3"))
+
+data$pstatus <- factor(data$pstatus, labels=c("living apart","living together"))
+
+data$medu <- factor(data$medu, labels=c("none","primary", "5th-9th grade", "secondary", "higher") )
+
+data$fedu <- factor(data$fedu, labels=c("none","primary", "5th-9th grade", "secondary", "higher") )
+
+data$traveltime <- factor(data$traveltime, labels=c("<15 min.","15 to 30 min.", "30 min to 1 hour", ">1 hour"))
+
+data$studytime <- factor(data$studytime, labels=c("<2 hours","2 to 5 hours", "5 to 10 hours", ">10 hours"))
+
+data$famrel <- factor(data$famrel, labels=c("very bad","bad", "fair", "good", "excellent"))
+
+data$freetime <- factor(data$freetime, labels=c("very low", "low", "medium", "high", "very high"))
+
+data$goout <- factor(data$goout, labels=c("very low", "low", "medium", "high", "very high"))
+
+data$dalc <- factor(data$dalc, labels=c("very low", "low", "medium", "high", "very high"))
+
+data$walc <- factor(data$walc, labels=c("very low", "low", "medium", "high", "very high"))
+
+data$health <- factor(data$health, labels=c("very bad","bad", "fair", "good", "very good"))
+
+data$file <- as.factor(data$file)      
+
+data$subject <- as.factor(data$subject)      
+
+data$bing3 <- factor(data$bing3, labels=c("fail","pass"))
+
+data$result <- as.factor(data$result)
+
+str(data)
+```
+
+
+Resumen de los datos 
+
+```{r}
+summary(data)
+
+variables<-data.frame(names(data), "", sapply(data, class), 0, 0, "")
+names(variables)<-c("variable", "descripcion", "tipo", "cuenta_null", "cuenta_na", "color")
+```
+
+
+### Calidad de nombres de los objetos de las variables
+
+Es importante que los nombres queden en calidad para la identificación posterior de las mismas.
+
+```{r}
+variables$descripcion<-as.character(variables$descripcion)
+
+variables$descripcion[1]="Student's school"
+variables$descripcion[2]="Student's sex"
+variables$descripcion[3]="Student's age"
+variables$descripcion[4]="Student's home address type"
+variables$descripcion[5]="Family size"
+variables$descripcion[6]="Parent's cohabitation status"
+variables$descripcion[7]="Mother's education"
+variables$descripcion[8]="Father's education"
+variables$descripcion[9]="Mother's job"
+variables$descripcion[10]="Father's job"
+variables$descripcion[11]="Reason to choose this school"
+variables$descripcion[12]="Student's guardian"
+variables$descripcion[13]="Home to school travel time"
+variables$descripcion[14]="Weekly study time"
+variables$descripcion[15]="Number of past class failures"
+variables$descripcion[16]="Extra educational support"
+variables$descripcion[17]="Family educational support"
+variables$descripcion[18]="Extra paid classes within the course subject"
+variables$descripcion[19]="Extra-curricular activities"
+variables$descripcion[20]="Attended nursery school"
+variables$descripcion[21]="Wants to take higher education"
+variables$descripcion[22]="Internet access at home"
+variables$descripcion[23]="With a romantic relationship"
+variables$descripcion[24]="Quality of family relationships"
+variables$descripcion[25]="Free time after school"
+variables$descripcion[26]="Going out with friends"
+variables$descripcion[27]="Workday alcohol consumption"
+variables$descripcion[28]="Weekend alcohol consumption"
+variables$descripcion[29]="Current health status"
+variables$descripcion[30]="Number of school absences"
+variables$descripcion[31]="First period grade"
+variables$descripcion[32]="Second period grade"
+variables$descripcion[33]="Final grade"
+variables$descripcion[34]="File"
+variables$descripcion[35]="Subject"
+variables$descripcion[36]="Primary key for student"
+variables$descripcion[37]="Binary final grade result"
+variables$descripcion[38]="Subject and result"
+variables$descripcion[39]="Global alcohol consumption"
+
+```
+
+
+Para garantizar esta identificación se asignará un color para cada variable
+
+```{r}
+variables$color<-as.character(variables$color)
+variables$color[1]="doscolores"
+variables$color[2]="doscolores"
+variables$color[3]="rainbow"
+variables$color[4]="doscolores"
+variables$color[5]="doscolores"
+variables$color[6]="doscolores"
+variables$color[7]="semaforo"
+variables$color[8]="semaforo"
+variables$color[9]="rainbow"
+variables$color[10]="rainbow"
+variables$color[11]="rainbow"
+variables$color[12]="rainbow"
+variables$color[13]="rainbow"
+variables$color[14]="semaforo"
+variables$color[15]="semaforo_inverso"
+variables$color[16]="noyes"
+variables$color[17]="noyes"
+variables$color[18]="noyes"
+variables$color[19]="noyes"
+variables$color[20]="noyes"
+variables$color[21]="noyes"
+variables$color[22]="noyes"
+variables$color[23]="noyes"
+variables$color[24]="semaforo"
+variables$color[25]="semaforo"
+variables$color[26]="semaforo"
+variables$color[27]="semaforo_inverso"
+variables$color[28]="semaforo_inverso"
+variables$color[29]="semaforo"
+variables$color[30]="heat_inverso"
+variables$color[31]="heat"
+variables$color[32]="heat"
+variables$color[33]="heat"
+variables$color[34]="doscolores"
+variables$color[35]="rainbow"
+variables$color[36]=""
+variables$color[37]="noyes"
+variables$color[38]="semaforo"
+variables$color[39]="heat_inverso"
+
+```
+
+
+#### Estructura variables numéricas
+
+
+Es importante observar la estructura de las variables numéricas
+
+```{r}
+variables_numericas<-c(as.character(variables[variables$tipo==c("integer"),1]),
+as.character(variables[variables$tipo==c("numeric"),1]))
+length(variables_numericas)
+
+variables_numericas
+```
+
+
+#### Variables discretas
+
+```{r}
+variables_discretas<-as.character(variables[variables$tipo!=c("character"),1])
+variables_discretas_names<-as.character(variables[variables$tipo!=c("character"),2])
+variables_discretas_color<-as.character(variables[variables$tipo!=c("character"),6])
+length(variables_discretas)
+
+variables_discretas
+```
+
+Eliminación de objetos que no son necesarios
+
+Este paso se realiza para que no genere algún efecto confuso a la hora de invocar datasets u objetos.
+
+```{r}
+rm(d1)
+rm(d2)
+rm(duplicated_rows)
+rm(i)
+```
+
+
+# 2. Calidad de datos 
+
+Luegos de haber analizado anterioremente las variables categóricas y numéricas se debe realizar un análisis de detección de ***Null's y datos atípicos*** en el dataset esto con el fin de no generar ruido en los resultados finales.
+
+## Detección de Nulls y Na's
+
+```{r}
+for(i in 1:length(variables$variable)){
+  var<-paste(variables$variable[i])  
+  variables$cuenta_null[i]<-sum(sapply(data[var], function(x) sum(is.null(x))))
+  variables$cuenta_na[i]<-sum(sapply(data[var], function(x) sum(is.na(x))))
+}
+
+# identificacion de nulos o NA's
+nrow(variables[variables$cuenta_null>0,])
+```
+
+```{r}
+nrow(variables[variables$cuenta_na>0,])
+```
+
+
+Aplicando Sapply
+
+```{r}
+sapply (data, function(x) (sum(is.na(x))))
+
+
+sapply (data, function(x) (sum(is.null(x))))
+```
+
+
+## Detección de outliers
+
+Se realizarán varias iteraciones para la limpieza de los datos, sin embargo se procederá con mucho detenimiento para no perder información sensible para el modelo.
+
+```{r}
+boxplot(data[variables_numericas])
+```
+
+
+Se evidencia valores atípicos en todas las variables numéricas, por tal motivo se detectan y se eliminan estos datos en un nuevo data frame
+
+#### Primera iteración
+
+
+```{r}
+data_clean1 <- data
+dim(data)
+```
+
+```{r}
+eliminados1 <-0
+
+for(i in 1:length(variables_numericas)){
+
+  variable<-data_clean1[variables_numericas][[i]]
+  # usamos boxplot.stats para ver los valores outliers
+  outliers<-boxplot.stats(variable)$out
+  index <- which( variable %in% outliers)
+  eliminados1<-eliminados1+length(index)
+  # eliminamos los registros que contienen outliers
+  if(length(index)>0) {
+    data_clean1<-data_clean1[-index,]
+  }
+
+}
+
+eliminados1
+
+
+
+```
+
+```{r}
+dim(data_clean1)
+```
+
+
+**Evidencia de la limpieza de los outliers**
+Efectivamente se presenta una reducción de datos outliers
+
+```{r}
+boxplot(data_clean1[variables_numericas])
+```
+
+
+Como aún se evidencia algunos valores atípicos, se procede a realizar la segunda iteración
+
+#### Segunda iteración
+
+```{r}
+data_clean2 <- data_clean1
+
+eliminados2 <-0
+
+for(i in 1:length(variables_numericas)){
+
+  variable<-data_clean2[variables_numericas][[i]]
+  # usamos boxplot.stats para ver los valores outliers
+  outliers<-boxplot.stats(variable)$out
+  index <- which( variable %in% outliers)
+  eliminados2<-eliminados2+length(index)
+  # eliminamos los registros que contienen outliers
+  if(length(index)>0) {
+    data_clean2<-data_clean2[-index,]
+  }
+}
+
+eliminados2
+
+```
+
+
+
+
+```{r}
+dim(data_clean2)
+```
+
+
+Se procede a realizar la verificación de la limpieza
+
+```{r}
+boxplot(data_clean2[variables_numericas])
+```
+
+
+Aún quedan outliers, se realiza la tercera iteración
+
+
+#### Tercera iteración
+
+```{r}
+data_clean3 <- data_clean2
+
+eliminados3 <-0
+
+for(i in 1:length(variables_numericas)){
+
+  variable<-data_clean3[variables_numericas][[i]]
+  # usamos boxplot.stats para ver los valores outliers
+  outliers<-boxplot.stats(variable)$out
+  index <- which( variable %in% outliers)
+  eliminados3<-eliminados3+length(index)
+  # eliminamos los registros que contienen outliers
+  if(length(index)>0) {
+    data_clean3<-data_clean3[-index,]
+  }
+}
+
+eliminados3
+```
+
+
+
+```{r}
+dim(data_clean3)
+```
+
+
+
+Se verifica la existencia de outliers
+
+```{r}
+boxplot(data_clean3[variables_numericas])
+```
+
+```{r}
+eliminados1+eliminados2+eliminados3
+```
+
+
+Aún quedan valores atípicos
+
+
+#### Cuarta iteración
+
+```{r}
+data_clean4 <- data_clean3
+
+eliminados4 <-0
+
+for(i in 1:length(variables_numericas)){
+
+  variable<-data_clean3[variables_numericas][[i]]
+  # usamos boxplot.stats para ver los valores outliers
+  outliers<-boxplot.stats(variable)$out
+  index <- which( variable %in% outliers)
+  eliminados4<-eliminados4+length(index)
+  # eliminamos los registros que contienen outliers
+  if(length(index)>0) {
+    data_clean4<-data_clean4[-index,]
+  }
+}
+
+eliminados4
+```
+
+
+```{r}
+dim(data_clean4)
+```
+
+
+
+Verificación
+
+```{r}
+boxplot(data_clean4[variables_numericas])
+```
+
+
+Aún se sigue reportando outliers después de las cuarta iteración
+
+Por lo tanto se trata solo los outliers en la variable absences
+
+```{r}
+data_clean <- data
+
+summary(data$absences)
+
+boxplot(data$absences)
+```
+
+Se usa boxplot.stats para ver los outliers
+
+```{r}
+  variable<-data_clean$absences
+
+  outliers<-boxplot.stats(variable)$out  
+  outliers
+```
+
+
+```{r}
+table(outliers)
+```
+
+
+Identificación
+
+
+
+```{r}
+index <- which( variable %in% outliers)
+  length(index)
+```
+
+
+Se eliminan los registros outliers
+
+```{r}
+data_clean<-data_clean[-index,]
+
+dim(data[data$absences>15,])
+
+boxplot(data_clean$absences)
+```
+
+Se evidencia que ya no hay existencia de outliers en esta variable.
+
+
+```{r}
+boxplot(data_clean[variables_numericas])
+```
+
+Se realiza la limpieza de objetos creados que no se usarán mas adelante.
+
+```{r}
+rm(data_clean1)
+rm(data_clean2)
+rm(data_clean3)
+rm(data_clean4)
+rm(eliminados1)
+rm(eliminados2)
+rm(eliminados3)
+rm(eliminados4)
+rm(i)
+rm(index)
+rm(outliers)
+rm(variable)
+rm(var)
+```
+
+```{r}
+boxplot(data[variables_numericas])
+```
+
+Comparación
+
+```{r}
+boxplot(data$absences)
+boxplot(data_clean$absences)
+```
+
+```{r}
+boxplot(data_clean[variables_numericas])
+```
+
+
+#### Resultado final de la limpieza de outliers
+
+Como se pudo observar, los valores atípicos se identifican por medio del boxplot. 
+
+Se eliminaron outliers en la variable ausencias ya que se identifican valores muy extremos y esto puede afectar el análisis de cluster.
+
+El dataframe final es data_clean
+
+
+# 3. Interpretación de datos
+
+Luego de realizar la limpieza de datos, se procede a la fase de interpretación de los datos.
+
+En esta fase se observará por medio de gráficos, la distribución por clases de los estudiantes. 
+
+## Análisis descriptivo de las variables categóricas
+
+En esta unidad se conocerá el comportamiento real de cada variable categórica relacionada con cada estudiante que identificará las causas del rendimiento académico.
+
+```{r}
+factor_var_plot <- function(var, var_name, color){
+  df_plot<-as.data.frame(table(data[,var]))
+  names(df_plot)<-c(var, "count")
+  
+  if( nrow(df_plot)>6 ){ lab<-paste0(df_plot$count)  }
+  else{ lab<-paste0(df_plot$count, " (", round(df_plot$count/1044*100,1), "%)")   }
+
+  switch(color, 
+         rainbow={ cols=rainbow(nrow(df_plot), alpha=0.8) },
+         heat={ 
+           cols=heat.colors(nrow(df_plot)) 
+         },
+         heat_inverso={ 
+           cols=heat.colors(nrow(df_plot)+2) 
+           cols=cols[length(cols):3]
+           #c[length(c):1]
+         },
+         doscolores={ cols=c("#00FF66CC","#0066FFCC") #cols=c("plum", "dodgerblue")  #cols=rainbow(nrow(df_plot), alpha=0.8) 
+         },
+         noyes={ cols=c("#FF0000CC","#0000FFCC") },
+         semaforo={ cols=brewer.pal(nrow(df_plot),"RdYlGn") },
+         semaforo_inverso={ 
+           cols=brewer.pal(nrow(df_plot),"RdYlGn") 
+           cols=cols[length(cols):1]
+           },
+         { cols=palette() }
+    )
+  
+    
+    
+  plot<-ggplot(data=df_plot, aes(x=df_plot[,1], y=df_plot[,2], fill=df_plot[,1]) ) +
+    geom_bar(stat="identity")+#scale_fill_brewer(palette="RdYlGn")+
+    
+    scale_fill_manual(values=cols)+
+  
+    geom_text(aes(label=lab), vjust=-0.3, size=2.5)+ 
+    ggtitle(paste("\n", "\n", var_name,"\n") )  +
+    xlab(var) + ylab("number of students") + labs(fill=var)+
+    theme(axis.text.x=element_text(angle=45, hjust=1))
+  show(plot)
+
+}
+
+for(i in 1:length(variables_discretas)){
+  var<-paste(variables_discretas[i])
+  var_name<-paste(variables_discretas_names[i])
+  color<-variables_discretas_color[i]
+  factor_var_plot(var,var_name,color)
+}
+```
+
+
+### Interpretación de los resultados
+
+- En las primeras gráficas se observa la distribución por estudiante en cada colegio de portugal, en este caso se evidencia mayor proporción de estudiantes en el colegio Gabriel Pereira, con una participación del 73,9%, mientras que el colegio Mousinho da Silveira tiene una propoción de 26,1%.
+- A nivel global se observa una mayor participación del sexo femenino del 56,6% mientras que el sexo masculino participa con un 43,3%.
+- Se identifica que las edades de los alumnos están entre los 15 y 22 años, la mayor concetración esta en las edades 16 y 17 años de edad. se registran pocos alumnos mayores de 18 años de edad. 
+
+- La gran población de estudiantes viven en el área urbana con un cubrimiento del 72,7%, mientras que el 27,3% residen en zona rural.
+
+- El 70% de los estudiantes pertenecen a conjuntos familiares con mas de 3 pesonas, mientras que el 30% restante pertenecen a familias con menos de 3 personas.
+
+- El 88% de los estudiantes viven con sus padres, mientras que el 11 % tienen sus padres separados.
+
+- Cuando se habla de educación de las madres de familia de los estudiantes casi el 30% tienen educación universitaria, mientras que 27 % solo han estudiado hasta noveno grado de secundaria. y el 22 % solo han terminado la secundaria, el 19% solo han hecho primaria y 1% no tienen educación escolar.
+
+- En cuanto a los padres de familia, el 31% de ellos solo realizaron estudios hasta noveno grado de secundaria, y el 21% llegaron hasta universidad, el 22% secundaria, el 24% hicieron primaria y el 1% no tienen educación escolar.
+
+- Cuando se les preguntó sobre el tiempo que toman para viajar desde casa al colegio, el 59% contestaron que toman 15 minutos de recorrido, 30% contestaron que se demoran en 15 a 30 minutos,  y el resto de la población de estudiantes se demoran mas de media hora para llegar al colegio.
+
+- El 48% de los estudiantes dedican de 2 a 5 horas semanales para estudiar, el 30% estudian menos de 2 horas, el 15% aplican de 5 a 10 horas semanales y un 6% emplean mas de 10 horas de estudio.
+
+- Se registra que el 82% de los estudiantes no ha perdido materias, mientras que el 11,5% ha perdido almenos una materia.
+
+- En cuanto a la calidad de la relación familiar el 49% de los estudiantes presenta una "buena" relación con sus familiares.
+
+- El 39% de los estudiantes dicen que su tiempo es medio en cuanto ha tiempo libre, y ese tiempo el 32 % de ellos lo utilizan para estar con sus amigos.
+
+- En cuanto al consumo de alcohol en semana, se evidenció que el 69% de los estudiantes no toman en semana.
+
+- En el fin de semana el 38% de los estudiantes no tienen una actividad alcoholica, solo 7% de ellos son tomadores constantes los dias festivos.
+
+- El 37% de los estudiantes encuestados presentan muy buen estado de salud, solo 13% de ellos presentan inconvenientes en cuanto enfermedades. 
+
+- la mayor población de estudiantes al menos han faltado 2 veces al colegio. sin embargo se encuentran registros de 75 ausencias durante el año escolar.
+
+- Se evidencia que el 62% de los estudiantes les va mejor en el clase de portugués y el 37% presenta favoritismo con las matemáticas.
+
+- Se registra que el 78% de los estudiantes aprueban el periodo escolar, mientras que el 22% de ellos no pasan el periodo.  se podría interpretar que estos estudiantes presentan en promedio un "buen" rendimiento.
+
+- Solo el 25% aprueban matemáticas, mientras que el 52% aprueban solo portugués, el 12,5% no aprueban matemáticas, y solo un 9 % no aprueba portugués.
+
+- En cuanto al consumo de alcohol, se registra que la mayoría de ellos no tienen un consumo constante de bebidas con alto grado de alcohol. 
+
+
+
+# 4. Análisis univariante y bivariante
+
+En esta literal, se requiere realizar un análisis con variables únicas y relacionadas entre sí, verificando correlaciones y covarianzas para dar una mejor interpretación de las variables.
+
+
+```{r}
+summary(data)
+```
+
+
+**Resumen de las variables numéricas**
+
+```{r}
+data_num<-data[variables_numericas]
+summary(data_num)
+```
+
+
+**Desviación de cada variable numérica**
+
+```{r}
+sapply(data_num,sd)
+```
+
+Se evidencia mayor disperción en la variable ausencias, "absences".
+
+
+**Matriz de correlación**
+
+```{r}
+correlacion<-cor(data_num)
+correlacion
+```
+
+
+**Gráfica de correlaciones**
+
+```{r}
+plot(data_num)
+```
+
+```{r}
+corrplot(correlacion, order = "hclust")
+```
+
+
+**Análisis entre la edad y ausencias**
+
+**age +absences**
+
+Se evidencia que los estudiantes que estan entre 15 y 17 años no presentan casi ausencias mientras que los estudiantes mayores de 18 años se registran ausencias mayores de 20.
+
+
+```{r}
+plot1<-ggplot(data,aes(x=age,y=absences))+ geom_point(position = position_jitter(w=0.3,h=0.3))
+
+plot1
+```
+
+
+```{r}
+round(tapply ( data$absences,data$age,mean ),1)
+```
+
+**Análisis entre edad + g3**
+**age + g3**
+
+
+```{r}
+plot2 <- ggplot (data,aes (x=age,y=g3)) +
+geom_point ( position=position_jitter ( w=0.3,h=0.3) )
+plot2
+```
+
+
+```{r}
+round(tapply ( data$g3,data$age,mean ),1)
+```
+
+**Análisis entre edad y notas malas**
+**age + failures**
+
+Se evidencia que no hay una relación fuerte entre la edad y las malas notas en las materias. se presentan algunos casos pero no es significativa la relación.
+
+```{r}
+plot3 <- ggplot (data,aes (x=age,y=failures)) +
+geom_point ( position=position_jitter ( w=0.3,h=0.3) )
+plot3
+```
+
+```{r}
+round(tapply ( data$failures,data$age,mean ),1)
+```
+
+
+**Análisis entre walc +  g3**
+
+
+```{r}
+plot4 <- ggplot (data,aes (x=walc,y=g3)) +
+geom_point ( position=position_jitter ( w=0.3,h=0.3) )
+plot4
+```
+
+```{r}
+round(tapply ( data$g3,data$walc,mean ),1)
+```
+
+
+**Análisis entre dalc +  g3**
+
+```{r}
+plot5 <- ggplot (data,aes (x=dalc,y=g3)) +
+geom_point ( position=position_jitter ( w=0.3,h=0.3) )
+plot5
+```
+
+
+```{r}
+round(tapply ( data$g3,data$dalc,mean ),1)
+```
+
+
+
+
+**Análisis edad + asinatura no superada**
+
+
+```{r}
+plot7 <- ggplot ( data,aes ( x=failures,y=g3 ) ) +
+geom_point ( position=position_jitter ( w=0.3,h=0.3) )
+plot7
+```
+
+```{r}
+round(tapply ( data$g3,data$failures,mean ),1)
+```
+
+**Relación edad  +  nota final + horas de estudio**
+
+Se evidencia una fuerte y clara relación que entre mas horas de estudio las notas serán mejores, pero esta relación esta identificada para edades entre 15 y 17 años de edad.
+```{r}
+g4 <- ggplot ( data,aes ( x=age,y=g3,color =studytime ) ) + geom_point ( aes ( size=g3 ) ) 
+
+g4
+```
+
+
+Posteriormente se analiza la existencia de diferencias por fracaso en las notas y la media del resto de las variables numéricas. 
+
+
+```{r}
+round(tapply ( data$g3,data$age,mean ),1)
+
+tapply ( data$absences,data$g3,mean )
+
+tapply ( data$failures,data$g3,mean )
+```
+
+
+**Tablas de contingencia**
+
+```{r}
+table ( data$sex,data$schoolsup )
+table ( data$sex,data$famsup )
+
+```
+
+**Tabla de contingencia del sexo con respecto a la superación de la nota**
+
+```{r}
+X <- table ( data$sex, data$bing3 )
+X
+```
+
+
+**Se calcula la proporción**
+
+```{r}
+prop.table(X,1)
+```
+
+
+# 5. Segmentación
+
+En esta paso , se implementará tecnicas de segmentación, con el objetivo de idenficar perfilamientos de grupos de estudiantes que son propensos al consumo de alcohol. 
+
+
+```{r}
+variables_numericas
+```
+
+
+**Variables cluster**
+
+```{r}
+variables_cluster<-c("age","failures","absences","g1","g2","g3")
+```
+
+Se utiliza el data set el cuál se le realizó la limpieza en los pasos anteriores.
+
+```{r}
+data_cluster<-data_clean[variables_cluster]
+head(data_cluster)
+```
+
+
+Se crea un dataframe donde se guardarán los datos normalizados, y luego se sustituyen las columnas de data_cluster por las columnas del data frame normalizado.
+
+
+```{r}
+data_cluster_norm<-data_cluster
+
+data_cluster_norm[,c("age")] <- (data_cluster$age-mean(data_cluster$age))/sd(data_cluster$age)
+
+  data_cluster_norm[,c("failures")] <- (data_cluster$failures-mean(data_cluster$failures))/sd(data_cluster$failures)
+ 
+  data_cluster_norm[,c("absences")] <- (data_cluster$absences-mean(data_cluster$absences))/sd(data_cluster$absences)
+ 
+  data_cluster_norm[,c("g1")] <- (data_cluster$g1-mean(data_cluster$g1))/sd(data_cluster$g1)
+ 
+  data_cluster_norm[,c("g2")] <- (data_cluster$g2-mean(data_cluster$g2))/sd(data_cluster$g2)
+ 
+  data_cluster_norm[,c("g3")] <- (data_cluster$g3-mean(data_cluster$g3))/sd(data_cluster$g3)
+```
+
+
+
+# K-Means
+
+Se utiliza k-means con k=3 y se visualiza algunos resultados.
+
+- los centros de grupos
+- la suma de cuadrados totales,
+- la suma de cuadrados dentro de cada grupo
+- La suma de cuadrados entre grupos
+
+```{r}
+set.seed(123)
+clus2_k3<-kmeans(data_cluster_norm,centers=3)
+clus2_k3$centers
+```
+
+
+```{r}
+clus2_k3$totss
+clus2_k3$withinss
+clus2_k3$tot.withinss
+clus2_k3$betweenss
+
+
+```
+
+
+# Elección del número de clústers
+
+Se buscará el k que haga que los individuos que pertenecen a un mismo grupo sean lo mas homogéneo posible y los individuos pertenecientes a distintos grupos sean lo mas heterogéneos posible.
+
+
+```{r}
+set.seed(123)
+bss <- kmeans(data_cluster_norm,centers=1)$betweenss
+ for (i in 2:10) bss[i] <- kmeans(data_cluster_norm,centers=i)$betweenss
+plot(1:10, bss, type="l", xlab="Número de grupos",ylab="Sumas de cuadrados entre grupos")
+```
+
+
+```{r}
+set.seed(123)
+tw <- kmeans(data_cluster_norm,centers=1)$tot.withinss
+ for (i in 2:10) tw[i] <- kmeans(data_cluster_norm,centers=i)$tot.withinss
+
+plot(1:10, tw, type="l", xlab="Número de grupos",ylab="Sumas de cuadrados dentro de grupos")
+```
+
+
+**Se unen los dos gráficos para la comparación**
+
+```{r}
+{
+  plot(1:10, tw, type="l",col="red", xlab="",ylab="", ylim=c(0,6000))
+  axis(side=2, col="red")
+  par(new=TRUE)
+  plot(1:10, bss, type="l",col="blue", xlab="Número de grupos",ylab="", ylim=c(0,6000), axes=FALSE)
+  axis(side=4, col="blue")
+  title(main="Sumas de cuadrados dentro de grupos (rojo) y entre grupos (azul)")
+  abline(v=4, col="green")
+}
+```
+
+Se evidencia que para k=4 se obtiene un punto de equilibrio entre el número de grupos.
+
+
+
+# Segmentación óptima
+
+Se calcula la segmentación para k= 4
+
+
+```{r}
+set.seed(123)
+clus2_k4<-kmeans(data_cluster_norm,centers=4)
+clus2_k4$centers
+
+clus2_k4$totss
+
+clus2_k4$withinss
+clus2_k4$tot.withinss
+clus2_k4$betweenss
+
+
+
+
+```
+
+
+
+
+**Asignación de clústers**
+
+```{r}
+names(data_cluster_norm)<-c("age_st","failures_st","absences_st", "g1_st", "g2_st", "g3_st") 
+data_cluster_result<-data.frame(data_cluster, data_cluster_norm, as.factor(clus2_k4$cluster), data_clean$alcohol)
+#names(data_cluster_result)[15]<-"cluster"
+names(data_cluster_result)[13]<-"cluster"
+names(data_cluster_result)[14]<-"alcohol"
+head(data_cluster_result)
+```
+
+**Gráficos de clúster**
+
+
+```{r}
+plot(data_cluster_result[c("age", "g1")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("age", "g2")], col=data_cluster_result$cluster)
+
+
+plot(data_cluster_result[c("age", "g3")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("age_st", "g1_st")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("age_st", "g2_st")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("age_st", "g3_st")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("failures", "g1")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("failures", "g2")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("failures", "g3")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("failures_st", "g1_st")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("failures_st", "g2_st")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("failures_st", "g3_st")], col=data_cluster_result$cluster)
+
+
+plot(data_cluster_result[c("absences", "g1")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("absences", "g2")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("absences", "g3")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("absences_st", "g1_st")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("absences_st", "g2_st")], col=data_cluster_result$cluster)
+
+plot(data_cluster_result[c("absences_st", "g3_st")], col=data_cluster_result$cluster)
+
+
+
+grafico_cluster<-ggplot(data_cluster_result, aes(x=absences, y=g3, color=cluster)) + geom_point(shape=7)+scale_color_brewer(palette="Set1")
+grafico_cluster
+
+rm(i)
+rm(clus2_k3)
+#save.image("mywspace_TFM.RData")
+clus2_k4$centers
+
+tapply ( data_cluster_result$alcohol,data_cluster_result$cluster,mean )
+
+```
+
+
+# Agrupación de cluster
+
+Se realiza una agrupación por clúster para observar la distribución de cada uno
+```{r}
+
+table(data_cluster_result$cluster)
+sort(prop.table(table(data_cluster_result$cluster))*100, decreasing = T)
+
+G<-data_cluster_result %>% select(cluster, age  , failures  , g1, g2, g3, alcohol) %>% group_by(cluster) %>% summarise(AVG_Alcohol= mean(alcohol, na.rm = TRUE), AVG_age=mean(age, na.rm = TRUE), AVG_Failures=mean(failures, na.rm = TRUE) )
+
+G
+
+```
+
+
+
+## 6. Conclusion e interpretación final
+
+- Se identificaron 4 posibles clústers de estudiantes con diferentes características que pueden afectar el rendimiento académico y luego de identificarlo se deben realizar estrategias de adopción de nuevas actividades para mejorar las notas.
+
+- Las variables que posiblemente insiden en el rendimiento son el consumo de alcohol, en relación con la edad y las faltas de clase.
+
+- El 38% de los estudiantes quedaron ubicados en el cluster 3, el cuál contiene estudiantes con edad promedio de 16 años con un consumo de alcohol moderado, tiene en promedio 5 % en las faltas de asistencia
+
+- El 31% de los estudiantes se encuentran en el clúster 2, en este se regisrta una edad promedio de 16 años incluyendo edades de 15, con menos consumo de alcohol y con inasistencia del 3 % con respecto al año académico.
+
+- El 17% se ubican en el clúster 4, en este grupo se encuentran los estudiantes con edades de 17 años donde su consumo de alcohol es un poco mas alto y las faltas  pueden ser del 24% en el año académico
+
+- El 12% restante se ubica en el clúster 1, en este se encuentran estudiantes con edades de 17 años en adelante donde el consumo de alcohol es medianamente alto y sus faltas son mayores en el año académico.
+
+- El análisis no supervisado nos da una gran claridad en el tema de segmentación por medio de la metodología k-means.
+Esta ayuda en la identificación de grupos con características especiales y así poder crear estrategias mas profundas para la mejora de resultados según la población en cada clúster.
+- Con este análisis se puede concluir además que es un gran ejemplo para el tema de desbalance de clases dado que se presentan diferentes proporciones en algunas variables categóricas que son de interés para los resultados del modelo.
+
+

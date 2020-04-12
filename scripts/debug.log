@@ -1,2 +1,6 @@
 [0225/072147.843:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
 [0228/214700.991:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[0411/141153.201:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[0411/202200.574:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[0412/143311.797:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[0412/144545.123:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
