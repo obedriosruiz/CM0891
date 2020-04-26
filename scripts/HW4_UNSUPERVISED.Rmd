@@ -26,11 +26,10 @@ los modelos de aprendizaje no supervisado son aquellos en los que se interesa en
 
 # Desarrollo
 
-Se tiene dos bases de datos que relacionan estudiantes con el consumo de alcohol, y se quiere analizar si existe relación alguna entre el consumo de alcohol y los resultados de las notas académicas. 
-
-La base de datos contiene información social y académica de un grupo de estudiantes de secundaria de edades entre los 15 y 22 años de dos escuelas de portugal
+<span style="color:red">Se tiene dos bases de datos que relacionan estudiantes con el consumo de alcohol, y se quiere analizar si existe relación alguna entre el consumo de alcohol y los resultados de las notas académicas.La base de datos contiene información social y académica de un grupo de estudiantes de secundaria de edades entre los 15 y 22 años de dos escuelas de portugal.</span>
 
 # Fases de desarrollo
+<span style="color:red">Con el fin de detectar algúna relación del consumo de alcohol con las notas académicas de los estudiantes de estas instituciones educativas se plantea los siguientes pasos para ejecutar los análisis.</span>
 
 - ***Analizar la calidad de los datos*** 
 
@@ -51,7 +50,19 @@ La base de datos contiene información social y académica de un grupo de estudi
 
 # 1. Preparación de los datos
 
-```{r}
+```{r, message = FALSE}
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color, 
+      x)
+  } else x
+}
+```
+
+
+```{r,message = FALSE}
 setwd("C:/Users/droma/Universidad EAFIT/Aprendizaje Automático - General/Análisis_No_Supervisado") # Directorio de trabajo
 
 library(readr)
@@ -96,7 +107,8 @@ dim(d1)
 str(d1)
 ```
 
-Se evidencia que la edad promedio de los estudiantes es de 16 años, el tiempo de estudio promedio es de 2 horas y por lo menos han tenido 6 faltas promedio durante el periodo escolar. 
+<span style="color:red">Se evidencia que la edad promedio de los estudiantes es de 16 años, el tiempo de estudio promedio es de 2 horas y por lo menos han tenido 6 faltas promedio durante el periodo escolar.</span>
+ 
 
 
 **Resumen de la base**
@@ -132,15 +144,16 @@ str(d2)
 ```
 
 **Resumen de la base**
-La información contenida en la base, contiene similitud con respecto a la base incial. la edad promedio de los estudiantes es de 16 años, utilizan 2 horas promedio de estudio y contienen casi 4 en promedio.
+<span style="color:red">La información contenida en la base, contiene similitud con respecto a la base incial. la edad promedio de los estudiantes es de 16 años, utilizan 2 horas promedio de estudio y contienen casi 4 en promedio.</span>
+
 
 ```{r}
 summary(d2)
 ```
 
 ### Unión de las bases de datos
+<span style="color:red">En esta sección se realiza el cruce de información de las dos bases para la consolidación de todos los registros en un solo dataset para el análisis posterior</span>
 
-En esta sección se realiza el cruce de información de las dos bases para la consolidación de todos los registros en un solo dataset para el análisis posterior
 
 ```{r}
 
@@ -194,8 +207,8 @@ colnames(data) <- tolower(colnames(data))
 
 
 ### Creación de un identificador único por estudiante
+<span style="color:red">Se creará una variable de identificador único  para cada estudiante, esto se hará concatenando ciertas variables las cuales garanterizan la existencia única y exclusiva del estudiante.</span>
 
-Se creará una variable de identificador único  para cada estudiante, esto se hará concatenando ciertas variables las cuales garanterizan la existencia única y exclusiva del estudiante.
 
 ```{r}
 data$student_key<-paste(data$school, data$sex, data$age, data$address, data$famsize, data$pstatus, data$medu, data$fedu, data$mjob, data$fjob, data$reason, data$nursery, data$internet, sep="-")
@@ -203,6 +216,7 @@ data$student_key<-paste(data$school, data$sex, data$age, data$address, data$fams
 
 
 ### Creación de la variable binaria
+
 En esta sección se creará una variable binaria que indicará si el estudiante aprobó o nó la materia, es decir, 1 es mayor que 10, o 0 si la nota es inferior a 10
 
 ```{r}
@@ -279,8 +293,8 @@ raw_data <- data
 
 
 ### Codificación de las variables categóricas
+<span style="color:red">Antes de iniciar un análisis descriptivo se codificarán las variables categóricas para tener un mejor entendimiento del comportamiento de los datos.</span>
 
-Antes de iniciar un análisis descriptivo se codificarán las variables categóricas para tener un mejor entendimiento del comportamiento de los datos.
 
 ```{r}
 data$school <- factor(data$school, labels=c("Gabriel Pereira", "Mousinho da Silveira"))
@@ -772,20 +786,20 @@ boxplot(data_clean[variables_numericas])
 
 #### Resultado final de la limpieza de outliers
 
-Como se pudo observar, los valores atípicos se identifican por medio del boxplot. 
-
-Se eliminaron outliers en la variable ausencias ya que se identifican valores muy extremos y esto puede afectar el análisis de cluster.
+<span style="color:red">Como se pudo observar, los valores atípicos se identifican por medio del boxplot. Se eliminaron outliers en la variable ausencias ya que se identifican valores muy extremos y esto puede afectar el análisis de cluster.</span>
 
 El dataframe final es data_clean
 
 
 # 3. Interpretación de datos
 
+
 Luego de realizar la limpieza de datos, se procede a la fase de interpretación de los datos.
 
 En esta fase se observará por medio de gráficos, la distribución por clases de los estudiantes. 
 
 ## Análisis descriptivo de las variables categóricas
+
 
 En esta unidad se conocerá el comportamiento real de cada variable categórica relacionada con cada estudiante que identificará las causas del rendimiento académico.
 
@@ -844,45 +858,53 @@ for(i in 1:length(variables_discretas)){
 
 ### Interpretación de los resultados
 
-- En las primeras gráficas se observa la distribución por estudiante en cada colegio de portugal, en este caso se evidencia mayor proporción de estudiantes en el colegio Gabriel Pereira, con una participación del 73,9%, mientras que el colegio Mousinho da Silveira tiene una propoción de 26,1%.
-- A nivel global se observa una mayor participación del sexo femenino del 56,6% mientras que el sexo masculino participa con un 43,3%.
-- Se identifica que las edades de los alumnos están entre los 15 y 22 años, la mayor concetración esta en las edades 16 y 17 años de edad. se registran pocos alumnos mayores de 18 años de edad. 
+<span style="color:red"> - En las primeras gráficas se observa la distribución por estudiante en cada colegio de portugal, en este caso se evidencia mayor proporción de estudiantes en el colegio Gabriel Pereira, con una participación del 73,9%, mientras que el colegio Mousinho da Silveira tiene una propoción de 26,1%.</span>
 
-- La gran población de estudiantes viven en el área urbana con un cubrimiento del 72,7%, mientras que el 27,3% residen en zona rural.
+<span style="color:red"> - A nivel global se observa una mayor participación del sexo femenino del 56,6% mientras que el sexo masculino participa con un 43,3%.</span>
+ 
 
-- El 70% de los estudiantes pertenecen a conjuntos familiares con mas de 3 pesonas, mientras que el 30% restante pertenecen a familias con menos de 3 personas.
 
-- El 88% de los estudiantes viven con sus padres, mientras que el 11 % tienen sus padres separados.
 
-- Cuando se habla de educación de las madres de familia de los estudiantes casi el 30% tienen educación universitaria, mientras que 27 % solo han estudiado hasta noveno grado de secundaria. y el 22 % solo han terminado la secundaria, el 19% solo han hecho primaria y 1% no tienen educación escolar.
+<span style="color:red"> - Se identifica que las edades de los alumnos están entre los 15 y 22 años, la mayor concetración esta en las edades 16 y 17 años de edad. se registran pocos alumnos mayores de 18 años de edad.</span>
 
-- En cuanto a los padres de familia, el 31% de ellos solo realizaron estudios hasta noveno grado de secundaria, y el 21% llegaron hasta universidad, el 22% secundaria, el 24% hicieron primaria y el 1% no tienen educación escolar.
 
-- Cuando se les preguntó sobre el tiempo que toman para viajar desde casa al colegio, el 59% contestaron que toman 15 minutos de recorrido, 30% contestaron que se demoran en 15 a 30 minutos,  y el resto de la población de estudiantes se demoran mas de media hora para llegar al colegio.
+<span style="color:red"> - La gran población de estudiantes viven en el área urbana con un cubrimiento del 72,7%, mientras que el 27,3% residen en zona rural.</span>
 
-- El 48% de los estudiantes dedican de 2 a 5 horas semanales para estudiar, el 30% estudian menos de 2 horas, el 15% aplican de 5 a 10 horas semanales y un 6% emplean mas de 10 horas de estudio.
 
-- Se registra que el 82% de los estudiantes no ha perdido materias, mientras que el 11,5% ha perdido almenos una materia.
+<span style="color:red"> - El 70% de los estudiantes pertenecen a conjuntos familiares con mas de 3 pesonas, mientras que el 30% restante pertenecen a familias con menos de 3 personas.</span>
 
-- En cuanto a la calidad de la relación familiar el 49% de los estudiantes presenta una "buena" relación con sus familiares.
+<span style="color:red"> - El 88% de los estudiantes viven con sus padres, mientras que el 11 % tienen sus padres separados.</span>
 
-- El 39% de los estudiantes dicen que su tiempo es medio en cuanto ha tiempo libre, y ese tiempo el 32 % de ellos lo utilizan para estar con sus amigos.
 
-- En cuanto al consumo de alcohol en semana, se evidenció que el 69% de los estudiantes no toman en semana.
+<span style="color:red"> - Cuando se habla de educación de las madres de familia de los estudiantes casi el 30% tienen educación universitaria, mientras que 27 % solo han estudiado hasta noveno grado de secundaria. y el 22 % solo han terminado la secundaria, el 19% solo han hecho primaria y 1% no tienen educación escolar.</span>
 
-- En el fin de semana el 38% de los estudiantes no tienen una actividad alcoholica, solo 7% de ellos son tomadores constantes los dias festivos.
+<span style="color:red"> - En cuanto a los padres de familia, el 31% de ellos solo realizaron estudios hasta noveno grado de secundaria, y el 21% llegaron hasta universidad, el 22% secundaria, el 24% hicieron primaria y el 1% no tienen educación escolar.</span>
 
-- El 37% de los estudiantes encuestados presentan muy buen estado de salud, solo 13% de ellos presentan inconvenientes en cuanto enfermedades. 
+<span style="color:red"> - Cuando se les preguntó sobre el tiempo que toman para viajar desde casa al colegio, el 59% contestaron que toman 15 minutos de recorrido, 30% contestaron que se demoran en 15 a 30 minutos,  y el resto de la población de estudiantes se demoran mas de media hora para llegar al colegio.</span>
 
-- la mayor población de estudiantes al menos han faltado 2 veces al colegio. sin embargo se encuentran registros de 75 ausencias durante el año escolar.
+<span style="color:red"> - El 48% de los estudiantes dedican de 2 a 5 horas semanales para estudiar, el 30% estudian menos de 2 horas, el 15% aplican de 5 a 10 horas semanales y un 6% emplean mas de 10 horas de estudio.</span>
 
-- Se evidencia que el 62% de los estudiantes les va mejor en el clase de portugués y el 37% presenta favoritismo con las matemáticas.
+<span style="color:red"> - Se registra que el 82% de los estudiantes no ha perdido materias, mientras que el 11,5% ha perdido almenos una materia.</span>
 
-- Se registra que el 78% de los estudiantes aprueban el periodo escolar, mientras que el 22% de ellos no pasan el periodo.  se podría interpretar que estos estudiantes presentan en promedio un "buen" rendimiento.
+<span style="color:red"> - En cuanto a la calidad de la relación familiar el 49% de los estudiantes presenta una "buena" relación con sus familiares.</span>
 
-- Solo el 25% aprueban matemáticas, mientras que el 52% aprueban solo portugués, el 12,5% no aprueban matemáticas, y solo un 9 % no aprueba portugués.
+<span style="color:red"> - El 39% de los estudiantes dicen que su tiempo es medio en cuanto ha tiempo libre, y ese tiempo el 32 % de ellos lo utilizan para estar con sus amigos.</span>
 
-- En cuanto al consumo de alcohol, se registra que la mayoría de ellos no tienen un consumo constante de bebidas con alto grado de alcohol. 
+<span style="color:red"> - En cuanto al consumo de alcohol en semana, se evidenció que el 69% de los estudiantes no toman en semana.</span>
+
+<span style="color:red"> - En el fin de semana el 38% de los estudiantes no tienen una actividad alcoholica, solo 7% de ellos son tomadores constantes los dias festivos.</span>
+
+<span style="color:red"> - El 37% de los estudiantes encuestados presentan muy buen estado de salud, solo 13% de ellos presentan inconvenientes en cuanto enfermedades.</span>
+
+<span style="color:red"> - la mayor población de estudiantes al menos han faltado 2 veces al colegio. sin embargo se encuentran registros de 75 ausencias durante el año escolar.</span>
+
+<span style="color:red"> - Se evidencia que el 62% de los estudiantes les va mejor en el clase de portugués y el 37% presenta favoritismo con las matemáticas.</span>
+
+<span style="color:red"> - Se registra que el 78% de los estudiantes aprueban el periodo escolar, mientras que el 22% de ellos no pasan el periodo.  se podría interpretar que estos estudiantes presentan en promedio un "buen" rendimiento.</span>
+
+<span style="color:red"> - Solo el 25% aprueban matemáticas, mientras que el 52% aprueban solo portugués, el 12,5% no aprueban matemáticas, y solo un 9 % no aprueba portugués.</span>
+
+<span style="color:red"> - En cuanto al consumo de alcohol, se registra que la mayoría de ellos no tienen un consumo constante de bebidas con alto grado de alcohol.</span>
 
 
 
@@ -935,8 +957,8 @@ corrplot(correlacion, order = "hclust")
 **Análisis entre la edad y ausencias**
 
 **age +absences**
+<span style="color:red">Se evidencia que los estudiantes que estan entre 15 y 17 años no presentan casi ausencias mientras que los estudiantes mayores de 18 años se registran ausencias mayores de 20.</span>
 
-Se evidencia que los estudiantes que estan entre 15 y 17 años no presentan casi ausencias mientras que los estudiantes mayores de 18 años se registran ausencias mayores de 20.
 
 
 ```{r}
@@ -968,7 +990,7 @@ round(tapply ( data$g3,data$age,mean ),1)
 **Análisis entre edad y notas malas**
 **age + failures**
 
-Se evidencia que no hay una relación fuerte entre la edad y las malas notas en las materias. se presentan algunos casos pero no es significativa la relación.
+<span style="color:red">Se evidencia que no hay una relación fuerte entre la edad y las malas notas en las materias. se presentan algunos casos pero no es significativa la relación.</span>
 
 ```{r}
 plot3 <- ggplot (data,aes (x=age,y=failures)) +
@@ -1026,7 +1048,8 @@ round(tapply ( data$g3,data$failures,mean ),1)
 
 **Relación edad  +  nota final + horas de estudio**
 
-Se evidencia una fuerte y clara relación que entre mas horas de estudio las notas serán mejores, pero esta relación esta identificada para edades entre 15 y 17 años de edad.
+<span style="color:red">Se evidencia una fuerte y clara relación que entre mas horas de estudio las notas serán mejores, pero esta relación esta identificada para edades entre 15 y 17 años de edad.</span>
+
 ```{r}
 g4 <- ggplot ( data,aes ( x=age,y=g3,color =studytime ) ) + geom_point ( aes ( size=g3 ) ) 
 
@@ -1070,9 +1093,10 @@ prop.table(X,1)
 
 
 # 5. Segmentación
+<span style="color:red"> Para realizar una identificación de los estudiantes que posiblemente tienen una relación fuerte con el acohol y de eso depende las notas académicas, se aplicará la técnica de segmentación por medio de K-means para lograr agrupar la población de estudiantes con este comportamiento y que las autoridades académicas empleen métodos de mejora de actitud en cuanto al consumo de alcohol.</span>
 
-En esta paso , se implementará tecnicas de segmentación, con el objetivo de idenficar perfilamientos de grupos de estudiantes que son propensos al consumo de alcohol. 
 
+#### Desarrollo
 
 ```{r}
 variables_numericas
@@ -1116,7 +1140,22 @@ data_cluster_norm[,c("age")] <- (data_cluster$age-mean(data_cluster$age))/sd(dat
 
 # K-Means
 
-Se utiliza k-means con k=3 y se visualiza algunos resultados.
+<span style="color:red">Se sabe que  K-Means (traducido como K-Medias en español), es un método de agrupamiento o clustering.</span>
+
+<span style="color:red">El clustering es una técnica para encontrar y clasificar K grupos de datos (clusters). Así, los elementos que comparten características semejantes estarán juntos en un mismo grupo, separados de los otros grupos con los que no comparten características.</span>
+
+<span style="color:red">Para saber si los datos son parecidos o diferentes el algoritmo K-medias utiliza la distancia entre los datos. Las observaciones que se parecen tendrán una menor distancia entre ellas. En general, como medida se utiliza la distancia euclideana aunque también se pueden utilizar otras funciones.</span>
+
+## Funcionamiento del algoritmo
+
+<span style="color:red">Los algoritmos de clustering son considerados de aprendizaje no supervisado. Este tipo de algoritmos de aprendizaje no supervisado busca patrones en los datos sin tener una predicción específica como objetivo (no hay variable dependiente). En lugar de tener una salida, los datos solo tienen una entrada que serían las múltiples variables que describen los datos.</span>
+
+<span style="color:red">K-means necesita como dato de entrada el número de grupos en los que vamos a segmentar la población. A partir de este número k de clusters, el algoritmo coloca primero k puntos aleatorios (centroides). Luego asigna a cualquiera de esos puntos todas las muestras con las distancias más pequeñas.
+A continuación, el punto se desplaza a la media de las muestras más cercanas. Esto generará una nueva asignación de muestras, ya que algunas muestras están ahora más cerca de otro centroide. Este proceso se repite de forma iterativa y los grupos se van ajustando hasta que la asignación no cambia más moviendo los puntos. Este resultado final representa el ajuste que maximiza la distancia entre los distintos grupos y minimiza la distancia intragrupo.</span>
+
+
+
+Para este caso se utiliza k-means con k=3 y se visualiza algunos resultados.
 
 - los centros de grupos
 - la suma de cuadrados totales,
@@ -1290,20 +1329,22 @@ G
 
 ## 6. Conclusion e interpretación final
 
-- Se identificaron 4 posibles clústers de estudiantes con diferentes características que pueden afectar el rendimiento académico y luego de identificarlo se deben realizar estrategias de adopción de nuevas actividades para mejorar las notas.
 
-- Las variables que posiblemente insiden en el rendimiento son el consumo de alcohol, en relación con la edad y las faltas de clase.
+<span style="color:red"> - Se identificaron 4 posibles clústers de estudiantes con diferentes características que pueden afectar el rendimiento académico y luego de identificarlo se deben realizar estrategias de adopción de nuevas actividades para mejorar las notas.</span>
 
-- El 38% de los estudiantes quedaron ubicados en el cluster 3, el cuál contiene estudiantes con edad promedio de 16 años con un consumo de alcohol moderado, tiene en promedio 5 % en las faltas de asistencia
+<span style="color:red"> - Las variables que posiblemente insiden en el rendimiento son el consumo de alcohol, en relación con la edad y las faltas de clase.</span>
 
-- El 31% de los estudiantes se encuentran en el clúster 2, en este se regisrta una edad promedio de 16 años incluyendo edades de 15, con menos consumo de alcohol y con inasistencia del 3 % con respecto al año académico.
+<span style="color:red"> - El 38% de los estudiantes quedaron ubicados en el cluster 3, el cuál contiene estudiantes con edad promedio de 16 años con un consumo de alcohol moderado, tiene en promedio 5 % en las faltas de asistencia</span>
 
-- El 17% se ubican en el clúster 4, en este grupo se encuentran los estudiantes con edades de 17 años donde su consumo de alcohol es un poco mas alto y las faltas  pueden ser del 24% en el año académico
+<span style="color:red"> - El 31% de los estudiantes se encuentran en el clúster 2, en este se regisrta una edad promedio de 16 años incluyendo edades de 15, con menos consumo de alcohol y con inasistencia del 3 % con respecto al año académico.</span>
 
-- El 12% restante se ubica en el clúster 1, en este se encuentran estudiantes con edades de 17 años en adelante donde el consumo de alcohol es medianamente alto y sus faltas son mayores en el año académico.
+<span style="color:red"> - El 17% se ubican en el clúster 4, en este grupo se encuentran los estudiantes con edades de 17 años donde su consumo de alcohol es un poco mas alto y las faltas  pueden ser del 24% en el año académico</span>
 
-- El análisis no supervisado nos da una gran claridad en el tema de segmentación por medio de la metodología k-means.
-Esta ayuda en la identificación de grupos con características especiales y así poder crear estrategias mas profundas para la mejora de resultados según la población en cada clúster.
-- Con este análisis se puede concluir además que es un gran ejemplo para el tema de desbalance de clases dado que se presentan diferentes proporciones en algunas variables categóricas que son de interés para los resultados del modelo.
+<span style="color:red"> - El 12% restante se ubica en el clúster 1, en este se encuentran estudiantes con edades de 17 años en adelante donde el consumo de alcohol es medianamente alto y sus faltas son mayores en el año académico.</span>
+
+<span style="color:red"> - El análisis no supervisado nos da una gran claridad en el tema de segmentación por medio de la metodología k-means.Esta ayuda en la identificación de grupos con características especiales y así poder crear estrategias mas profundas para la mejora de resultados según la población en cada clúster.</span>
+
+
+<span style="color:red"> - Con este análisis se puede concluir además que es un gran ejemplo para el tema de desbalance de clases dado que se presentan diferentes proporciones en algunas variables categóricas que son de interés para los resultados del modelo.</span>
 
 

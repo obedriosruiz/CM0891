@@ -13110,7 +13110,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Descripci&#243;n-de-problema">Descripci&#243;n de problema<a class="anchor-link" href="#Descripci&#243;n-de-problema">&#182;</a></h3>
+<h3 id="-Descripci&#243;n-de-problema"><span style="color:red"> Descripci&#243;n de problema</span><a class="anchor-link" href="#-Descripci&#243;n-de-problema">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -13204,7 +13204,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Representaci&#243;n-de-la-soluci&#243;n">Representaci&#243;n de la soluci&#243;n<a class="anchor-link" href="#Representaci&#243;n-de-la-soluci&#243;n">&#182;</a></h3>
+<h3 id="Representaci&#243;n-de-la-soluci&#243;n"><span style="color:red">Representaci&#243;n de la soluci&#243;n</span><a class="anchor-link" href="#Representaci&#243;n-de-la-soluci&#243;n">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -13219,7 +13219,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Representaci&#243;n-de-los-individuos">Representaci&#243;n de los individuos<a class="anchor-link" href="#Representaci&#243;n-de-los-individuos">&#182;</a></h3>
+<h3 id="Representaci&#243;n-de-los-individuos"><span style="color:red">Representaci&#243;n de los individuos</span><a class="anchor-link" href="#Representaci&#243;n-de-los-individuos">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -13270,7 +13270,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="E1">E1<a class="anchor-link" href="#E1">&#182;</a></h4><p>Este algoritmo considera dos conjuntos de soluciones iniciales diferentes generadas independientemente mediante la unión de dos tipos de soluciones aleatorias, una parte construida con <strong>A1</strong> y la otra mediante la generación y traducción a rutas de valores pseudoaleatorios uniformemente distribuidos. En cada población se selecciona un par de individuos por ruleta y posteriormente se cruzan. Por un lado, en la población <em>1</em> se selecciona aleatoriamente un punto por donde dividir el cromosoma de los padres, de forma que los hijos resultan del intercambio de información entre ellos, más especificamente, del punto hacia la izquierda contendrá los nodos del padre con peor función objetivo y el resto del otro, ello con la intención de generar variedad genética en la población descendiente. Por otro lado, en la población <em>2</em>, se crea el hijo en base a un vector binario aleatorio donde los $1$ indican un nodo proveniente del primer padre y los $0$ del segundo. La mutación en ambas poblaciones se rige por una probabilidad, el procedimiento aplicado es modificar dos o un gen aleatoriamente sobre el hijo generado para la población <em>1</em> o <em>2</em>, respectivamente. La actualización de cada población es mediante la selección en orden descendente de los mejores individuos entre la población actual y la recién procreada.</p>
+<h4 id="E1"><span style="color:red">E1</span><a class="anchor-link" href="#E1">&#182;</a></h4><p>Este algoritmo considera dos conjuntos de soluciones iniciales diferentes generadas independientemente mediante la unión de dos tipos de soluciones aleatorias, una parte construida con <strong>A1</strong> y la otra mediante la generación y traducción a rutas de valores pseudoaleatorios uniformemente distribuidos. En cada población se selecciona un par de individuos por ruleta y posteriormente se cruzan. Por un lado, en la población <em>1</em> se selecciona aleatoriamente un punto por donde dividir el cromosoma de los padres, de forma que los hijos resultan del intercambio de información entre ellos, más especificamente, del punto hacia la izquierda contendrá los nodos del padre con peor función objetivo y el resto del otro, ello con la intención de generar variedad genética en la población descendiente. Por otro lado, en la población <em>2</em>, se crea el hijo en base a un vector binario aleatorio donde los $1$ indican un nodo proveniente del primer padre y los $0$ del segundo. La mutación en ambas poblaciones se rige por una probabilidad, el procedimiento aplicado es modificar dos o un gen aleatoriamente sobre el hijo generado para la población <em>1</em> o <em>2</em>, respectivamente. La actualización de cada población es mediante la selección en orden descendente de los mejores individuos entre la población actual y la recién procreada.</p>
 <p>Posterior a esta actualización interactuan los dos conjuntos de poblaciones mediante la selección e inserción aleatoria de sujetos de una en otra; por otro lado, si no se han encontrado soluciones mejores durante un número determinado de generaciones, respecto a un porcentaje del número total de generaciones entonces se renuevan algunos individuos reemplazandolos por otros creados a partir de <strong>A1</strong>. Todo este procedimiento se repite tanto como un número fijo de generaciones, además, en el caso en que se presenten soluciones infactibles se usa un factor de penalización en la función objetivo dependiendo de cuán lejos está de ser factible. Finalmente, a la mejor solución obtenida entre las dos poblaciones se aplica el algoritmo <em>R1</em> para refinar con la obtención del óptimo en su vecindad.</p>
 
 </div>
@@ -13286,7 +13286,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Implementaci&#243;n-e-instancias">Implementaci&#243;n e instancias<a class="anchor-link" href="#Implementaci&#243;n-e-instancias">&#182;</a></h4>
+<h4 id="Implementaci&#243;n-e-instancias"><span style="color:red">Implementaci&#243;n e instancias</span><a class="anchor-link" href="#Implementaci&#243;n-e-instancias">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -13332,7 +13332,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Resultados">Resultados<a class="anchor-link" href="#Resultados">&#182;</a></h3>
+<h3 id="Resultados"><span style="color:red">Resultados</span><a class="anchor-link" href="#Resultados">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -13692,7 +13692,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="An&#225;lisis-de-sensibilidad">An&#225;lisis de sensibilidad<a class="anchor-link" href="#An&#225;lisis-de-sensibilidad">&#182;</a></h3>
+<h3 id="An&#225;lisis-de-sensibilidad"><span style="color:red">An&#225;lisis de sensibilidad</span><a class="anchor-link" href="#An&#225;lisis-de-sensibilidad">&#182;</a></h3>
 </div>
 </div>
 </div>

@@ -14518,6 +14518,14 @@ dtype: object</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Se laggea la variable de salida en períodos del tiempo pasados. Esto se efectúa porque estamos hablando de una variable de temperatura, que entendemos tiene comportamientos físicos decayentes en el tiempo que la afectan constantemente, así que es natural considerar estos lags.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[25]:</div>
@@ -14535,6 +14543,14 @@ dtype: object</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Se aplica lag sobre la variable de salida, dada la intención de generar predicciones para el período $t+1$ a partir de la información pasada en $t$, $t-1$, $t-2$, ..., $t-10$.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[26]:</div>
@@ -14548,6 +14564,14 @@ dtype: object</pre>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Se incluyen lags de las variables fisicas para simular el comportamiento físico del sistema en el tiempo, esto habiendo ordenado el conjunto de datos</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -14614,7 +14638,7 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Feature-Selection">Feature Selection<a class="anchor-link" href="#Feature-Selection">&#182;</a></h4>
+<h4 id="Feature-Selection"><span style="color:red">Feature Selection</span><a class="anchor-link" href="#Feature-Selection">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -14653,7 +14677,16 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Con este resultado identificamos, de acuerdo al coeficiente de Gini, interno al método RandomForest, aquellas variables que mejor explican la salida</p>
+<p><span style="color:red">**Nota**</span></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Con este resultado identificamos, de acuerdo al coeficiente de Gini, interno al método RandomForest, aquellas variables que mejor explican la salida por medio de la varianza.</p>
+<p>Posteriormente las aplicamos en el forward selection method para la selección real de las características</p>
 
 </div>
 </div>
@@ -14882,7 +14915,18 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">**Nota**</span></p>
 <p>Se usa el orden entregado previamente por el análisis de importancia dado por el <strong>RandomForestRegressor</strong> para evaluar la salida en <strong>r2</strong> del modelo dadas las respectivas variables, se usa una vez más un randomforest</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">**Forward selection method for feature engineering**</span></p>
+<blockquote><p>Using r2 metric for model evaluation</p>
+</blockquote>
 
 </div>
 </div>
@@ -14892,10 +14936,7 @@ dtype: object</pre>
 <div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Forward selection method for feature engineering</span>
-<span class="c1"># Using r2 metric for model evaluation</span>
-
-<span class="n">all_cols_rel</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_cols_rel</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">fi</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
 
 <span class="n">comps</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">iters</span> <span class="o">=</span> <span class="p">{}</span>
@@ -14928,6 +14969,18 @@ dtype: object</pre>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">**Nota**</span></p>
+<ul>
+<li>Nótese como desde este punto la medida de evaluación <strong>r2</strong> resulta relativamente favorable</li>
+<li>Adicionalmente, la partición del conjunto de entrenamiento y validación no se hace aleatoria debido a que queremos conservar el orden temporal de las variables, de modo que tengamos una mayor probabilidad de acertar a los períodos posteriores (de validación).</li>
+</ul>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -15089,7 +15142,7 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Interpretaci&#243;n-de-resultados-previos">Interpretaci&#243;n de resultados previos<a class="anchor-link" href="#Interpretaci&#243;n-de-resultados-previos">&#182;</a></h4>
+<h4 id="**Interpretaci&#243;n-de-resultados-previos**"><span style="color:red">**Interpretaci&#243;n de resultados previos**</span><a class="anchor-link" href="#**Interpretaci&#243;n-de-resultados-previos**">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -15288,7 +15341,7 @@ INFO:root:Saving results en C:\Users\orios\OneDrive - Cementos Argos S.A\Documen
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Se hace uso de la métrica <strong>r2</strong> o la función de scoring para la regresión, ello dado el objetivo de obtener el modelo que mejor reduzca el error medio cuadrático</p>
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Se hace uso de la métrica <strong>r2</strong> o la función de scoring para la regresión, ello dado el objetivo de obtener el modelo que mejor reduzca el error medio cuadrático</p>
 
 </div>
 </div>
@@ -15421,7 +15474,7 @@ INFO:root:Model: random_forest
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Una vez más se usa el <strong>r2</strong> para medir la calidad de los resultados</p>
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Una vez más se usa el <strong>r2</strong> para medir la calidad de los resultados</p>
 
 </div>
 </div>
@@ -15536,7 +15589,7 @@ INFO:root:Model: random_forest
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="An&#225;lisis-de-sensibilidad">An&#225;lisis de sensibilidad<a class="anchor-link" href="#An&#225;lisis-de-sensibilidad">&#182;</a></h3>
+<h3 id="An&#225;lisis-de-sensibilidad"><span style="color:red">An&#225;lisis de sensibilidad</span><a class="anchor-link" href="#An&#225;lisis-de-sensibilidad">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -15756,6 +15809,13 @@ C:\Users\orios\AppData\Local\Continuum\anaconda3\lib\site-packages\sklearn\pipel
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Conclusiones"><span style="color:red">Conclusiones</span><a class="anchor-link" href="#Conclusiones">&#182;</a></h3>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
