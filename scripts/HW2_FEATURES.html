@@ -14812,7 +14812,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><span style="color:red">Explicación de método</span></p>
+<p><span style="color:red">**Explicación de método**</span></p>
 
 </div>
 </div>
@@ -14827,9 +14827,9 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>La metodología de selección de características a aplicar consiste en la validación de importancia de los descriptores para cada muestra por período.</p>
-<p>Para cada período $t$ se utiliza un <em>random forest regressor</em> con el criterio de calidad <strong>mse</strong> (mean squared error) como modelo para estimar la importancia de cada variable y finalmente se seleccionan aquellas que para un corte dado cumplen las condiciones deseadas.</p>
-<p>Se espera que estadísticamente si un conjunto de features son relevantes para un período, luego éstos se mantengan a lo largo del tiempo, de aquí que buscamos que bajo el método de <strong>RandomForest</strong> se mantenga la importancia y desplegamos los ordenes</p>
+<p><span style="color:red">La metodología de selección de características a aplicar consiste en la validación de importancia de los descriptores para cada muestra por período. </span></p>
+<p><span style="color:red">Para cada período $t$ se utiliza un *random forest regressor* con el criterio de calidad **mse** (mean squared error) como modelo para estimar la importancia de cada variable y finalmente se seleccionan aquellas que para un corte dado cumplen las condiciones deseadas. </span></p>
+<p><span style="color:red">Se espera que estadísticamente si un conjunto de features son relevantes para un período, luego éstos se mantengan a lo largo del tiempo, de aquí que buscamos que bajo el método de **RandomForest** se mantenga la importancia y desplegamos los ordenes </span></p>
 
 </div>
 </div>
@@ -14854,8 +14854,25 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Con el propósito de evaluar una de las técnicas vistas durante el curso haremos uso de la librería <tt>mlxtend</tt> y comparararemos respecto a los resultados obtenidos por el método 1.</p>
-<p><tt>mlxtend</tt> nos permitirá hacer un <strong>forward selection</strong> con la medida de score <strong>r2</strong> de las variables a disposición, considerando todas las características a disposición.</p>
+<p><span style="color:red">
+Con el propósito de evaluar una de las técnicas vistas durante el curso haremos uso de la librería <tt>mlxtend</tt> y comparararemos respecto a los resultados obtenidos por el método 1.</p>
+<p><tt>mlxtend</tt> nos permitirá hacer un <strong>forward selection</strong> con la medida de score <strong>r2</strong> de las variables a disposición, considerando todas las características a disposición.&lt;/span&gt;</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Explicaci&#243;n-de-m&#233;tricas"><span style="color:red">Explicaci&#243;n de m&#233;tricas</span><a class="anchor-link" href="#Explicaci&#243;n-de-m&#233;tricas">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">El **coeficiente gini**, para el primer método, es seleccionado porque dado que explica la variabilidad de las ventas (variable salida) a partir de las características a disposición se busca seleccionar precisamente aquellas que mejor la reproduzcan. A medida que encuentren aquellas que de forma más holística reduzcan la variabilidad, se pueden omitir características particulares reduantes en el proceso. </span></p>
+<p><span style="color:red">Respecto al uso del uso del **r2** como métrica de evaluación esto se debe a que buscamos encontrar el modelo que mejor ajuste a la serie de ventas. Se tiene en cuenta que la variable salida es continua y al negocio le interesa mucho más encontrar métodos que se acerquen lo más posible a una relación de 1.</span></p>
 
 </div>
 </div>
@@ -14872,7 +14889,7 @@ div#notebook {
     <span class="n">x</span> <span class="o">=</span> <span class="n">df_check</span><span class="p">[</span><span class="n">x_cols</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">df_check</span><span class="p">[</span><span class="n">y_cols</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     
-    <span class="n">regressor</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="n">n_estimators</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">criterion</span> <span class="o">=</span> <span class="s1">&#39;mse&#39;</span><span class="p">)</span>  
+    <span class="n">regressor</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="n">n_estimators</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>  
     <span class="n">regressor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     
     <span class="n">fi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="n">x_cols</span><span class="p">,</span>
@@ -15037,8 +15054,19 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red"> **Interpretación** </span></p>
+<p><span style="color:red">Nótese que estas variables son naturales en la segregación de ventas del negocio cementero, donde se presentan dinámicas muy diferentes a nivel departamental, cada uno de los cuales pertenece a una regional, esto implicando que la distribución en norte, sur, oriente y occidente del país termina teniendo efecto en como evolucionan las ventas. </span></p>
+<p><span style="color:red">Respecto a la sociedad éstas agrupan diferentes dinámicas de compra de los clientes, donde una sociedad en particular, la CO02, acumula volumenes mucho más grandes que cualquier otra.</span></p>
+<p><span style="color:red">Finalmente, la presencia de el segmento y el pagador como características relevantes reflejan la segregación natural entre constructores de grandes proyectos y aquellos de mucho menor tamaño, ello dado que los grandes tienden a acumular valores mayores y estar ampliamente distribuidos en el país, desplazando por tanto a los demás.</span></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><span style="color:red">**Explicación gráfica**</span></p>
-<p>La gráfica a continuación muestra, en la primer imagen, la posición agregada en términos de importancia de cada feature, indicando que aquel que se encuentre más a la derecha se posicionó más relevante que el resto; en la segunda imagen se despliega el promedio del coeficiente gini para cada feature</p>
+<p><span style="color:red">La gráfica a continuación muestra, en la primer imagen, la posición agregada en términos de importancia de cada feature, indicando que aquel que se encuentre más a la derecha se posicionó más relevante que el resto; en la segunda imagen se despliega el promedio del coeficiente gini para cada feature </span></p>
 
 </div>
 </div>
@@ -15097,7 +15125,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Caso-Cemento---Gini-index">Caso Cemento - Gini index<a class="anchor-link" href="#Caso-Cemento---Gini-index">&#182;</a></h4>
+<h4 id="Caso-Cemento---Gini-index-"><span style="color:red">Caso Cemento - Gini index </span><a class="anchor-link" href="#Caso-Cemento---Gini-index-">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -15329,7 +15357,7 @@ Root Mean Squared Error (RMSE): 301.7123060888282
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Nótese como respecto a las medidas de evaluación de interés el método 1 (Gini) supera al método 2 (Forward selection).</p>
+<p><span style="color:red">Nótese como respecto a las medidas de evaluación de interés el método 1 (Gini) supera al método 2 (Forward selection). <span style="color:red"></p>
 <table>
 <thead><tr>
 <th style="text-align:center">Medida</th>
@@ -15359,8 +15387,8 @@ Root Mean Squared Error (RMSE): 301.7123060888282
 </tr>
 </tbody>
 </table>
-<p>Donde en el segundo caso las medidas superan hasta el doble del primero, indicando que para el caso cemento el método propuesto supera al del forward selection.</p>
-<p>En particular, la medida de error bajo el método uno de $23.7$ resulta muy positiva, dado que es un monto despreciable cuando se habla de toneladas de cemento</p>
+<p><span style="color:red">Donde en el segundo caso las medidas superan hasta el doble del primero, indicando que para el caso cemento el método propuesto supera al del forward selection.<span style="color:red"></p>
+<p><span style="color:red">En particular, la medida de error bajo el método uno de $23.7$ resulta muy positiva, dado que es un monto despreciable cuando se habla de toneladas de cemento<span style="color:red"></p>
 
 </div>
 </div>
@@ -15501,8 +15529,17 @@ Root Mean Squared Error (RMSE): 301.7123060888282
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red"> **Interpretación** </span></p>
+<p><span style="color:red">En el negocio de concreto estas variables son completamente naturales, ello dado que, en principio, la dinámica regional varia bastante entre departamentos. Además, las sociedades generan una participación marcada en el tema de las ventas, ello considerando que al interior también se encuentran segmentos de diferente tamaño. Finalmente, los constructores que compran a la compañía son los más grandes y relevantes en el país, aunque son pocos, y por tanto cada pagador representa un punto importante en la evaluación de las ventas.</span></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><span style="color:red">**Explicación gráfica**</span></p>
-<p>La gráfica a continuación muestra, en la primer imagen, la posición agregada en términos de importancia de cada feature, indicando que aquel que se encuentre más a la derecha se posicionó más relevante que el resto; en la segunda imagen se despliega el promedio del coeficiente gini para cada feature</p>
+<p><span style="color:red">La gráfica a continuación muestra, en la primer imagen, la posición agregada en términos de importancia de cada feature, indicando que aquel que se encuentre más a la derecha se posicionó más relevante que el resto; en la segunda imagen se despliega el promedio del coeficiente gini para cada feature</span></p>
 
 </div>
 </div>
@@ -15561,7 +15598,7 @@ Root Mean Squared Error (RMSE): 301.7123060888282
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Caso-Concreto---Gini-index">Caso Concreto - Gini index<a class="anchor-link" href="#Caso-Concreto---Gini-index">&#182;</a></h4>
+<h4 id="Caso-Concreto---Gini-index-"><span style="color:red">Caso Concreto - Gini index </span><a class="anchor-link" href="#Caso-Concreto---Gini-index-">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -15793,7 +15830,7 @@ Root Mean Squared Error (RMSE): 683.6891943933697
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>El mismo resultado se obtiene para el caso concreto como en el del cemento, donde por medio del método 1 se obtienen medidas de error menores que para el caso 2</p>
+<p><span style="color:red">El mismo resultado se obtiene para el caso concreto como en el del cemento, donde por medio del método 1 se obtienen medidas de error menores que para el caso 2</span></p>
 <table>
 <thead><tr>
 <th style="text-align:center">Medida</th>
@@ -15823,7 +15860,8 @@ Root Mean Squared Error (RMSE): 683.6891943933697
 </tr>
 </tbody>
 </table>
-<p>Es importante mencionar que el negocio de concreto maneja volumenes monstruosos, por lo que una medida $MAE$ de $175$ toneladas es una medida de error aceptable</p>
+<p><span style="color:red">
+Es importante mencionar que el negocio de concreto maneja volumenes monstruosos, por lo que una medida $MAE$ de $175$ toneladas es una medida de error aceptable</span></p>
 
 </div>
 </div>

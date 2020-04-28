@@ -13117,7 +13117,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>El Cumulative Capacited Vehicle Routing Problem (CCVRP) resulta como una variación del Capacited Vehicle Routing Problem (VRP) <a href="#1">[1]</a>, al buscar minimizar la suma de tiempos de llegada de un conjunto de vehículos al atender los clientes de determinada zona bajo restricciones concernientes a la capacidad. Es sabido que especialmente el VRP es uno de los más importantes y estudiados en optimización combinatoria. El CCVRP consta de un conjunto de clientes dispersos en un grafo donde cada uno tiene una demanda y se deben programar rutas para visitar a cada cliente de acuerdo a su posición y demanda. Frente a esto, los enfoques sobre los cuales es posible construir un método de solución son amplios, variando desde métodos constructivos hasta otros de naturaleza más compleja</p>
+<p><span style="color:red">El Cumulative Capacited Vehicle Routing Problem (CCVRP) resulta como una variación del Capacited Vehicle Routing Problem (VRP) [[1]](#1), al buscar minimizar la suma de tiempos de llegada de un conjunto de vehículos al atender los clientes de determinada zona bajo restricciones concernientes a la capacidad. Es sabido que especialmente el VRP es uno de los más importantes y estudiados en optimización combinatoria. El CCVRP consta de un conjunto de clientes dispersos en un grafo donde cada uno tiene una demanda y se deben programar rutas para visitar a cada cliente de acuerdo a su posición y demanda. Frente a esto, los enfoques sobre los cuales es posible construir un método de solución son amplios, variando desde métodos constructivos hasta otros de naturaleza más compleja</span></p>
 
 </div>
 </div>
@@ -13188,7 +13188,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>La función objetivo (1) minimiza la suma de los tiempos de llegada donde los clientes. Las restricciones en (2) son aquellas relacionadas con la conservación del flujo. Las restricciones en (3) establecen que cada <em>$i\in V'$</em> es visitado una vez por un único vehículo. En (4) se asegura que la demanda que lleva el vehículo <em>k</em> no exceda su capacidad. Las (5) y (6) confirman que cada ruta inicie y termine donde debe hacerlo. (7) dice que si un cliente <em>j</em> es atendido después de un cliente <em>i</em> por el vehiculo <em>k</em> entonces <em>$t_{j}^{k}$</em> debe ser mayor o igual que <em>$t_{i}^{k}$</em> sumado el tiempo de viaje <em>$c_{ij}$</em>, donde <em>G</em> denota una constante considerablemente grande. Finalmente las ecuaciones (8) y (9) corresponden a los dominios de las variables de decisión.</p>
+<p><span style="color:red">La función objetivo (1) minimiza la suma de los tiempos de llegada donde los clientes. Las restricciones en (2) son aquellas relacionadas con la conservación del flujo. Las restricciones en (3) establecen que cada *$i\in V'$* es visitado una vez por un único vehículo. En (4) se asegura que la demanda que lleva el vehículo *k* no exceda su capacidad. Las (5) y (6) confirman que cada ruta inicie y termine donde debe hacerlo. (7) dice que si un cliente *j* es atendido después de un cliente *i* por el vehiculo *k* entonces *$t_{j}^{k}$* debe ser mayor o igual que *$t_{i}^{k}$* sumado el tiempo de viaje *$c_{ij}$*, donde *G* denota una constante considerablemente grande. Finalmente las ecuaciones (8) y (9) corresponden a los dominios de las variables de decisión.</span></p>
 
 </div>
 </div>
@@ -13211,7 +13211,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Las soluciones del problema dadas por los métodos a continuación, están conformadas por dos elementos, una matriz de nodos con $k$ filas y $n+2$ columnas, donde cada fila indica la ruta seguida por su respectivo vehículo y, en segundo lugar, el valor de la función objetivo para cada ruta. En particular, teniendo la matriz de rutas y las posiciones de los nodos, es posible visualizar el conjunto de rutas de los vehículos obtenido bajo un criterio determinado.</p>
+<p><span style="color:red">Las soluciones del problema dadas por los métodos a continuación, están conformadas por dos elementos, una matriz de nodos con $k$ filas y $n+2$ columnas, donde cada fila indica la ruta seguida por su respectivo vehículo y, en segundo lugar, el valor de la función objetivo para cada ruta. En particular, teniendo la matriz de rutas y las posiciones de los nodos, es posible visualizar el conjunto de rutas de los vehículos obtenido bajo un criterio determinado.</span></p>
 
 </div>
 </div>
@@ -13226,7 +13226,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Los individuos (rutas) son representados como arreglos binarios donde $1$ en una determinada posición indica que un vehículo lo visita ó $0$ en el caso contrario.</p>
+<p><span style="color:red">Los individuos (rutas) son representados como arreglos binarios donde $1$ en una determinada posición indica que un vehículo lo visita ó $0$ en el caso contrario.</span></p>
 
 </div>
 </div>
@@ -13270,8 +13270,8 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="E1"><span style="color:red">E1</span><a class="anchor-link" href="#E1">&#182;</a></h4><p>Este algoritmo considera dos conjuntos de soluciones iniciales diferentes generadas independientemente mediante la unión de dos tipos de soluciones aleatorias, una parte construida con <strong>A1</strong> y la otra mediante la generación y traducción a rutas de valores pseudoaleatorios uniformemente distribuidos. En cada población se selecciona un par de individuos por ruleta y posteriormente se cruzan. Por un lado, en la población <em>1</em> se selecciona aleatoriamente un punto por donde dividir el cromosoma de los padres, de forma que los hijos resultan del intercambio de información entre ellos, más especificamente, del punto hacia la izquierda contendrá los nodos del padre con peor función objetivo y el resto del otro, ello con la intención de generar variedad genética en la población descendiente. Por otro lado, en la población <em>2</em>, se crea el hijo en base a un vector binario aleatorio donde los $1$ indican un nodo proveniente del primer padre y los $0$ del segundo. La mutación en ambas poblaciones se rige por una probabilidad, el procedimiento aplicado es modificar dos o un gen aleatoriamente sobre el hijo generado para la población <em>1</em> o <em>2</em>, respectivamente. La actualización de cada población es mediante la selección en orden descendente de los mejores individuos entre la población actual y la recién procreada.</p>
-<p>Posterior a esta actualización interactuan los dos conjuntos de poblaciones mediante la selección e inserción aleatoria de sujetos de una en otra; por otro lado, si no se han encontrado soluciones mejores durante un número determinado de generaciones, respecto a un porcentaje del número total de generaciones entonces se renuevan algunos individuos reemplazandolos por otros creados a partir de <strong>A1</strong>. Todo este procedimiento se repite tanto como un número fijo de generaciones, además, en el caso en que se presenten soluciones infactibles se usa un factor de penalización en la función objetivo dependiendo de cuán lejos está de ser factible. Finalmente, a la mejor solución obtenida entre las dos poblaciones se aplica el algoritmo <em>R1</em> para refinar con la obtención del óptimo en su vecindad.</p>
+<h4 id="E1"><span style="color:red">E1</span><a class="anchor-link" href="#E1">&#182;</a></h4><p><span style="color:red">Este algoritmo considera dos conjuntos de soluciones iniciales diferentes generadas independientemente mediante la unión de dos tipos de soluciones aleatorias, una parte construida con **A1** y la otra mediante la generación y traducción a rutas de valores pseudoaleatorios uniformemente distribuidos. En cada población se selecciona un par de individuos por ruleta y posteriormente se cruzan. Por un lado, en la población *1* se selecciona aleatoriamente un punto por donde dividir el cromosoma de los padres, de forma que los hijos resultan del intercambio de información entre ellos, más especificamente, del punto hacia la izquierda contendrá los nodos del padre con peor función objetivo y el resto del otro, ello con la intención de generar variedad genética en la población descendiente. Por otro lado, en la población *2*, se crea el hijo en base a un vector binario aleatorio donde los $1$ indican un nodo proveniente del primer padre y los $0$ del segundo. La mutación en ambas poblaciones se rige por una probabilidad, el procedimiento aplicado es modificar dos o un gen aleatoriamente sobre el hijo generado para la población *1* o *2*, respectivamente. La actualización de cada población es mediante la selección en orden descendente de los mejores individuos entre la población actual y la recién procreada.</span></p>
+<p><span style="color:red">Posterior a esta actualización interactuan los dos conjuntos de poblaciones mediante la selección e inserción aleatoria de sujetos de una en otra; por otro lado, si no se han encontrado soluciones mejores durante un número determinado de generaciones, respecto a un porcentaje del número total de generaciones entonces se renuevan algunos individuos reemplazandolos por otros creados a partir de **A1**. Todo este procedimiento se repite tanto como un número fijo de generaciones, además, en el caso en que se presenten soluciones infactibles se usa un factor de penalización en la función objetivo dependiendo de cuán lejos está de ser factible. Finalmente, a la mejor solución obtenida entre las dos poblaciones se aplica el algoritmo *R1* para refinar con la obtención del óptimo en su vecindad.</span></p>
 
 </div>
 </div>
@@ -13286,6 +13286,29 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">Códigos presentes en </span><a href="https://drive.google.com/drive/folders/15Zq59w99h1jTEqK_DPC2PSFIo8LuqXMr">https://drive.google.com/drive/folders/15Zq59w99h1jTEqK_DPC2PSFIo8LuqXMr</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Restricciones"><span style="color:red">Restricciones</span><a class="anchor-link" href="#Restricciones">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">Las restricciones presentadas desde la ecuación [[2]](#2) a la [[8]](#8) son anexadas en el código siempre teniendo en cuenta tanto los límites de capacidad como la atención de cada punto de visita</span></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Implementaci&#243;n-e-instancias"><span style="color:red">Implementaci&#243;n e instancias</span><a class="anchor-link" href="#Implementaci&#243;n-e-instancias">&#182;</a></h4>
 </div>
 </div>
@@ -13293,7 +13316,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Se han tomado como referencia los resultados presentados en  <a href="#4">[4]</a> para realizar un análisis comparativo entre soluciones ya conocidas para algunas de las instancias y aquellas entregadas por los algoritmos propuestos. La solución para cada conjunto de información se obtiene seleccionando la mejor instancia dado un trío de soluciones parciales para cada uno. Los resultados más significativos son resumidos en la tabla a continuación, donde los títulos de las columnas son: nombre de la instancia, número de nodos ($n$), número de vehiculos disponibles ($k$), la mejor solución obtenida hasta ahora según <a href="#4">[4]</a> ($BKS$), la cual es dada en segundos y el mejor valor de la función objetivo ($Best$) así cómo su promedio ($Avg.$) de acuerdo al número de ejecuciones.</p>
+<p><span style="color:red">Se han tomado como referencia los resultados presentados en  [[4]](#4) para realizar un análisis comparativo entre soluciones ya conocidas para algunas de las instancias y aquellas entregadas por los algoritmos propuestos. La solución para cada conjunto de información se obtiene seleccionando la mejor instancia dado un trío de soluciones parciales para cada uno. Los resultados más significativos son resumidos en la tabla a continuación, donde los títulos de las columnas son: nombre de la instancia, número de nodos ($n$), número de vehiculos disponibles ($k$), la mejor solución obtenida hasta ahora según [[4]](#4) ($BKS$), la cual es dada en segundos y el mejor valor de la función objetivo ($Best$) así cómo su promedio ($Avg.$) de acuerdo al número de ejecuciones.</span></p>
 
 </div>
 </div>
@@ -13301,7 +13324,7 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Los resultados obtenidos también son dados en segundos y se agrega la columna $Error$ $abs$ como la diferencia absoluta entre el referente de la literatura y el mejor resultado obtenido en el procedimiento propio</p>
+<p><span style="color:red">Los resultados obtenidos también son dados en segundos y se agrega la columna $Error$ $abs$ como la diferencia absoluta entre el referente de la literatura y el mejor resultado obtenido en el procedimiento propio</span></p>
 
 </div>
 </div>
@@ -13309,14 +13332,14 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Criterios">Criterios<a class="anchor-link" href="#Criterios">&#182;</a></h4>
+<h4 id="Criterios"><span style="color:red">Criterios</span><a class="anchor-link" href="#Criterios">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Para la ejecución del algoritmo <em>E1</em> se han preestablecido sus parámetros, así se fijó el número de generaciones en $5000$ para la librería tomada de <a href="#5">[5]</a> y en $500$ para la librería tomada de <a href="#6">[6]</a>, y la cantidad de hijos a crear en $50$. Respecto al aporte de <strong>A1</strong> a la construcción de las poblaciones iniciales se estableció en $10$ (cuya longitud del conjunto de nodos a tener en cuenta fue $2$ con $50$ iteraciones) y otras $70$ mediante valores aleatorios. Las probabilidades de mutación fueron $0.8$ y $0.7$ para la población <em>1</em> y <em>2</em> correspondientemente. Si no se presentan cambios en la mejor solución obtenida a medida que transcurren las generaciones al menos en el $5\%$ de la cantidad fija entonces se renova la población en $10$ de sus individuos después del primero, que contiene la mejor solución de la(s) población(es).</p>
+<p><span style="color:red">Para la ejecución del algoritmo *E1* se han preestablecido sus parámetros, así se fijó el número de generaciones en $5000$ para la librería tomada de [[5]](#5) y en $500$ para la librería tomada de [[6]](#6), y la cantidad de hijos a crear en $50$. Respecto al aporte de **A1** a la construcción de las poblaciones iniciales se estableció en $10$ (cuya longitud del conjunto de nodos a tener en cuenta fue $2$ con $50$ iteraciones) y otras $70$ mediante valores aleatorios. Las probabilidades de mutación fueron $0.8$ y $0.7$ para la población *1* y *2* correspondientemente. Si no se presentan cambios en la mejor solución obtenida a medida que transcurren las generaciones al menos en el $5\%$ de la cantidad fija entonces se renova la población en $10$ de sus individuos después del primero, que contiene la mejor solución de la(s) población(es).</span></p>
 
 </div>
 </div>
@@ -13339,8 +13362,8 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>En la tabla a continuación puede verse como, si bien los errores absolutos entre las soluciones encontradas y aquellas en la literatura son relativamente altos, no se presentan en todos los casos. Puede observarse, por ejemplo, como en $CMT01$, $CMT02$, $CMT03$, $GWKC17$ se alcanzan valores muy cercanos a los óptimos.</p>
-<p>Es de tener en cuenta que la calidad de las soluciones son fuertemente influenciadas por la cantidad de iteraciones y la definición de los diferentes componentes que interactúan con el meta-heurístico, siendo algunos de ellos aleatorios en su búsqueda, por lo que sería interesante explorar como anexar comportamientos mejor asociados con el problema que se estudia para programarlos en el método.</p>
+<p><span style="color:red">En la tabla a continuación puede verse como, si bien los errores absolutos entre las soluciones encontradas y aquellas en la literatura son relativamente altos, no se presentan en todos los casos. Puede observarse, por ejemplo, como en $CMT01$, $CMT02$, $CMT03$, $GWKC17$ se alcanzan valores muy cercanos a los óptimos.</span></p>
+<p><span style="color:red">Es de tener en cuenta que la calidad de las soluciones son fuertemente influenciadas por la cantidad de iteraciones y la definición de los diferentes componentes que interactúan con el meta-heurístico, siendo algunos de ellos aleatorios en su búsqueda, por lo que sería interesante explorar como anexar comportamientos mejor asociados con el problema que se estudia para programarlos en el método.</span></p>
 
 </div>
 </div>
@@ -13699,8 +13722,8 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Respecto al parámetro de mayor relevancia $gen$ se hizo un análisis de sensibilidad para evaluar la respuesta del método $E1$ sobre la instancia $CMT01$.</p>
-<p>Las condiciones de la simnulación se preservan variando $gen$ entre $100$ y $10.000$ en pasos de $50$, así pues se obtiene</p>
+<p><span style="color:red">Respecto al parámetro de mayor relevancia $gen$ se hizo un análisis de sensibilidad para evaluar la respuesta del método $E1$ sobre la instancia $CMT01$.</span></p>
+<p><span style="color:red">Las condiciones de la simulación se preservan variando $gen$ entre $100$ y $10.000$ en pasos de $50$, así pues se obtiene</span></p>
 
 </div>
 </div>
@@ -13746,8 +13769,8 @@ x_{ij}^{k}\in \{0,1\}\hspace{0.5cm} \forall i\in V, j\in V, k\in R
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Observese que el mínimo obtenido requirió un parámetro superior al impuesto inicialmente para la simulación en la primer tabla (de $5000$). Adicionalmente, el tiempo de computación aumenta de forma sustancial a medida que aumenta el parámetro, lo que podría reducirse, no obstante, disponinendo de mayor capacidad computacional.</p>
-<p>Es de esperarse que a medida que se incremente el valor del parámetro se encuentren soluciones que alcancen, inclusive, el óptimo presentado en la literatura; sin embargo, no es posible asegurar que siempre se alcanzarán valores mínimos, ello dado la aleatoriedad de las poblaciones iniciales con que se ejecuta el método. Lo que sí se puede asegurar es que las soluciones a medida que aumenta el valor del parámetro se mantienen en rangos menores cada vez más y este comportamiento facilitaría entonces crear intervalos entre los cuales el $gener$ debería moverse.</p>
+<p><span style="color:red">Observese que el mínimo obtenido requirió un parámetro superior al impuesto inicialmente para la simulación en la primer tabla (de $5000$). Adicionalmente, el tiempo de computación aumenta de forma sustancial a medida que aumenta el parámetro, lo que podría reducirse, no obstante, disponinendo de mayor capacidad computacional.</span></p>
+<p><span style="color:red">Es de esperarse que a medida que se incremente el valor del parámetro se encuentren soluciones que alcancen, inclusive, el óptimo presentado en la literatura; sin embargo, no es posible asegurar que siempre se alcanzarán valores mínimos, ello dado la aleatoriedad de las poblaciones iniciales con que se ejecuta el método. Lo que sí se puede asegurar es que las soluciones a medida que aumenta el valor del parámetro se mantienen en rangos menores cada vez más y este comportamiento facilitaría entonces crear intervalos entre los cuales el $gener$ debería moverse.</span></p>
 
 </div>
 </div>

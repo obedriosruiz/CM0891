@@ -14521,7 +14521,7 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Se laggea la variable de salida en períodos del tiempo pasados. Esto se efectúa porque estamos hablando de una variable de temperatura, que entendemos tiene comportamientos físicos decayentes en el tiempo que la afectan constantemente, así que es natural considerar estos lags.</p>
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p><span style="color:red">Se laggea la variable de salida en períodos del tiempo pasados. Esto se efectúa porque estamos hablando de una variable de temperatura, que entendemos tiene comportamientos físicos decayentes en el tiempo que la afectan constantemente, así que es natural considerar estos lags.</span></p>
 
 </div>
 </div>
@@ -14546,7 +14546,7 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Se aplica lag sobre la variable de salida, dada la intención de generar predicciones para el período $t+1$ a partir de la información pasada en $t$, $t-1$, $t-2$, ..., $t-10$.</p>
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p><span style="color:red">Se aplica lag sobre la variable de salida, dada la intención de generar predicciones para el período $t+1$ a partir de la información pasada en $t$, $t-1$, $t-2$, ..., $t-10$.</span></p>
 
 </div>
 </div>
@@ -14568,7 +14568,7 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Se incluyen lags de las variables fisicas para simular el comportamiento físico del sistema en el tiempo, esto habiendo ordenado el conjunto de datos</p>
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p><span style="color:red">Se incluyen lags de las variables fisicas para simular el comportamiento físico del sistema en el tiempo, esto habiendo ordenado el conjunto de datos</span></p>
 
 </div>
 </div>
@@ -14645,8 +14645,8 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Para efectos de feature selection aplicamos un <em>RandomForest</em> estandarizando la muestra de datos.</p>
-<p>Se toman todos los datos</p>
+<p><span style="color:red">Para efectos de feature selection aplicamos primero un *RandomForest* estandarizando la muestra de datos.</span></p>
+<p><span style="color:red">Se toman todos los datos</span></p>
 
 </div>
 </div>
@@ -14685,8 +14685,8 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Con este resultado identificamos, de acuerdo al coeficiente de Gini, interno al método RandomForest, aquellas variables que mejor explican la salida por medio de la varianza.</p>
-<p>Posteriormente las aplicamos en el forward selection method para la selección real de las características</p>
+<p><span style="color:red">Con este resultado identificamos, de acuerdo al coeficiente de Gini, interno al método RandomForest, aquellas variables que mejor explican la salida por medio de la varianza.</span></p>
+<p><span style="color:red">Posteriormente las aplicamos en el forward selection method para la selección real de las características</span></p>
 
 </div>
 </div>
@@ -14916,7 +14916,7 @@ dtype: object</pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><span style="color:red">**Nota**</span></p>
-<p>Se usa el orden entregado previamente por el análisis de importancia dado por el <strong>RandomForestRegressor</strong> para evaluar la salida en <strong>r2</strong> del modelo dadas las respectivas variables, se usa una vez más un randomforest</p>
+<p><span style="color:red">Se usa el orden entregado previamente por el análisis de importancia dado por el **RandomForestRegressor** para evaluar la salida en **r2** del modelo dadas las respectivas variables, se usa una vez más un randomforest</span></p>
 
 </div>
 </div>
@@ -14925,7 +14925,7 @@ dtype: object</pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><span style="color:red">**Forward selection method for feature engineering**</span></p>
-<blockquote><p>Using r2 metric for model evaluation</p>
+<blockquote><p><span style="color:red">Using r2 metric for model evaluation, dado que tratamos un problema de estimación casi regresiva donde elegimos aquella métrica más simple para explicar la bondad de los métodos</span></p>
 </blockquote>
 
 </div>
@@ -14975,8 +14975,8 @@ dtype: object</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><span style="color:red">**Nota**</span></p>
 <ul>
-<li>Nótese como desde este punto la medida de evaluación <strong>r2</strong> resulta relativamente favorable</li>
-<li>Adicionalmente, la partición del conjunto de entrenamiento y validación no se hace aleatoria debido a que queremos conservar el orden temporal de las variables, de modo que tengamos una mayor probabilidad de acertar a los períodos posteriores (de validación).</li>
+<li><span style="color:red">Nótese como desde este punto la medida de evaluación **r2** resulta relativamente favorable</span></li>
+<li><span style="color:red">Adicionalmente, la partición del conjunto de entrenamiento y validación no se hace aleatoria debido a que queremos conservar el orden temporal de las variables, de modo que tengamos una mayor probabilidad de acertar a los períodos posteriores (de validación).</span></li>
 </ul>
 
 </div>
@@ -15032,6 +15032,14 @@ dtype: object</pre>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">Nótese que el **r2** es muy cercano a **1**, lo cual lo hace muy favorable</span></p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -15149,7 +15157,7 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Según los resultados previos se identifican los <tt>features</tt> más relevantes dados los niveles de pureza entregados por el árbol, de los cuales se seleccionan aquellos que minimizan el error</p>
+<p><span style="color:red">Según los resultados previos se identifican los <tt>features</tt> más relevantes dados los niveles de pureza entregados por el árbol, de los cuales se seleccionan aquellos que minimizan el error</span></p>
 
 </div>
 </div>
@@ -15157,7 +15165,7 @@ dtype: object</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Es importante mencionar como las variables representan efectivamente el comportamiento físico del sistema al encontrar los períodos previos de la variable de salida como input esencial en el resultado final. Adicionalmente, hay múltiples lags en el resto de las variables que también aparecen y expresan como la aplicación, por ejemplo, de la corriente y velocidad de la parrilla (<tt>Iparrilla</tt>) tienen un efecto posterior en como la temperatura del ventilador 2 (variable de salida) evoluciona en el instante actual</p>
+<p><span style="color:red">Es importante mencionar como las variables representan efectivamente el comportamiento físico del sistema al encontrar los períodos previos de la variable de salida como input esencial en el resultado final. Adicionalmente, hay múltiples lags en el resto de las variables que también aparecen y expresan como la aplicación, por ejemplo, de la corriente y velocidad de la parrilla (<tt>Iparrilla</tt>) tienen un efecto posterior en como la temperatura del ventilador 2 (variable de salida) evoluciona en el instante actual</span></p>
 
 </div>
 </div>
@@ -15222,6 +15230,14 @@ dtype: object</pre>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">La función a continuación es creación propia y corresponde a un gridsearch-cross validation donde buscamos reducir para todas las familias de métodos dispuestos y las opciones de los parámetros aquel que mejor resulte en término de la métrica de scoring, en particular el **r2**. </span></p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -15341,7 +15357,7 @@ INFO:root:Saving results en C:\Users\orios\OneDrive - Cementos Argos S.A\Documen
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Se hace uso de la métrica <strong>r2</strong> o la función de scoring para la regresión, ello dado el objetivo de obtener el modelo que mejor reduzca el error medio cuadrático</p>
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p><span style="color:red">Se hace uso de la métrica **r2** o la función de scoring para la regresión, ello dado el objetivo de obtener el modelo que mejor correlación genere (más cercana a 1 posible) en término de los valores de salida y las explicativas</span></p>
 
 </div>
 </div>
@@ -15474,7 +15490,7 @@ INFO:root:Model: random_forest
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p>Una vez más se usa el <strong>r2</strong> para medir la calidad de los resultados</p>
+<h4 id="Nota"><span style="color:red">Nota</span><a class="anchor-link" href="#Nota">&#182;</a></h4><p><span style="color:red">Una vez más se usa el **r2** para medir la calidad de los resultados</span></p>
 
 </div>
 </div>
@@ -15596,7 +15612,15 @@ INFO:root:Model: random_forest
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Para validar la efectividad del método encontrado bajo cv se efectuará un breve análisis de sensibilidad que indique cual debe ser la elección del parámetro que más afecta las estimaciones, en particular $n\_estimators$ (cantidad de árboles en el bosque) sobre el árbol de decisión</p>
+<p><span style="color:red">Para validar la efectividad del método encontrado bajo cv se efectuará un breve análisis de sensibilidad que indique cual debe ser la elección del parámetro que más afecta las estimaciones, en particular $n\_estimators$ (cantidad de árboles en el bosque) sobre el árbol de decisión</span></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red">La selección de este parámetro se justifica al ser aquel con mayor facilidad de interpretación e términos del funcionamiento del método. Adicionalmente, al ser el valor que determina la cantidad de árboles a usar en el método se busca que sea éste lo más justo posible para poder explicar la realidad del sistema, es decir, un valor que balancee la interpretabilidad de las variables y la jerarquia elegida para generar las predicciones versus la exactitud de las estimaciones</span></p>
 
 </div>
 </div>
@@ -15820,7 +15844,7 @@ C:\Users\orios\AppData\Local\Continuum\anaconda3\lib\site-packages\sklearn\pipel
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>El anterior análisis entrega un resultado muy interesante y es que el parámetro $n\_estimators$ realmente no tiene efecto tan significativo sobre la efectividad de la estimación dado que el conjunto de entrenamiento entrega suficiente información con las medidas fisicas resagadas como para entregar buenos resultados. Asegurando un parámetro de al menos $100$ es suficiente para obtener una medida de $r2$ aceptable.</p>
+<p><span style="color:red">El anterior análisis entrega un resultado muy interesante y es que el parámetro $n\_estimators$ realmente no tiene efecto tan significativo sobre la efectividad de la estimación dado que el conjunto de entrenamiento entrega suficiente información con las medidas fisicas resagadas como para entregar buenos resultados. Asegurando un parámetro de al menos $100$ es suficiente para obtener una medida de $r2$ aceptable.</span></p>
 
 </div>
 </div>

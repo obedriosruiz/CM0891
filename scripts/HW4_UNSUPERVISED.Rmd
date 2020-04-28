@@ -24,31 +24,36 @@ El aprendizaje no supervisado se puede usar en conjunto con la Inferencia bayesi
 los modelos de aprendizaje no supervisado son aquellos en los que se interesa en producir una función que se ajuste a una salida deseada obtenida a priori, sino en aumentar el conocimiento de los datos disponibles (y posibles datos futuros), por ejemplo, dando una agrupación de los ejemplos según su similaridad (clustering), o simplificando las estructura de los mismos manteniendo sus características fundamentales (como en reducción de la dimensionalidad).
 
 
-# Desarrollo
+# <span style="color:red"> Desarrollo</span>
 
 <span style="color:red">Se tiene dos bases de datos que relacionan estudiantes con el consumo de alcohol, y se quiere analizar si existe relación alguna entre el consumo de alcohol y los resultados de las notas académicas.La base de datos contiene información social y académica de un grupo de estudiantes de secundaria de edades entre los 15 y 22 años de dos escuelas de portugal.</span>
 
-# Fases de desarrollo
+
+
+
+# <span style="color:red">Fases de desarrollo</span>
 <span style="color:red">Con el fin de detectar algúna relación del consumo de alcohol con las notas académicas de los estudiantes de estas instituciones educativas se plantea los siguientes pasos para ejecutar los análisis.</span>
 
-- ***Analizar la calidad de los datos*** 
+- <span style="color:red">***Analisis y exploración de la calidad de los datos***</span>
 
-- ***Detectar si existen valores outliers*** 
+- <span style="color:red">***Detectar si existen valores outliers***</span> 
 
-- ***Entendimiento de datos por medio de visualizaciones***
+- <span style="color:red">***Entendimiento de datos por medio de visualizaciones***</span>
 
-- ***Entender los datos a través del análisis estadístico univariante y bivariante*** 
+- <span style="color:red">***Entender los datos a través del análisis estadístico univariante y bivariante***</span> 
 
-- ***Segmentar los datos: K-Means***
+- <span style="color:red">***Segmentar los datos: K-Means***</span>
 
-- ***Conclusiones e interpretación final***
+- <span style="color:red">***Entendimiento del funcionamiento del algoritmo de k-means***</span>
+
+- <span style="color:red"> ***Conclusiones e interpretación final***</span>
 
 
 
 ![](pipeline.png)
 
 
-# 1. Preparación de los datos
+# Preparación de los datos
 
 ```{r, message = FALSE}
 colorize <- function(x, color) {
@@ -75,7 +80,7 @@ library(dplyr)
 ```
 
 
-# Exploración de las bases de datos
+## <span style="color:red">Análisis y exploración de la calidad de los datos</span> 
 
 A continuación se importarán las bases de datos para el estudio. se procederá a cruzar la información para consolidar y preparar los datos para el análisis exploratiorio y aplicación de análisis no supervisado.
 
@@ -96,12 +101,12 @@ d1<-read_csv("C:/Users/droma/Universidad EAFIT/Aprendizaje Automático - General
 
 ```
 
-**Dimensión de la base**
+#### Dimensión de la base
 ```{r}
 dim(d1)
 ```
 
-**Estructura de la base**
+#### <span style="color:red">Estructura de la base</span>
 
 ```{r}
 str(d1)
@@ -111,13 +116,13 @@ str(d1)
  
 
 
-**Resumen de la base**
+### Resumen de la base
 ```{r}
 summary(d1)
 ```
 
 
-**Base de datos : student-por**
+#### Base de datos : student-por
 
 
 En este otra base de datos contiene otro grupo de estudiantes de otro colegio de  Portugal, esta contiene 649 registros, distribuidas en 33 variables, en las cuales son 17 categóricas y 16 numéricas. 
@@ -131,19 +136,19 @@ d2<-read_csv("C:/Users/droma/Universidad EAFIT/Aprendizaje Automático - General
 
 ```
 
-**Dimensión de la base**
+#### Dimensión de la base
 
 ```{r}
 dim(d2)
 ```
 
-**Estructura de la base**
+#### Estructura de la base
 
 ```{r}
 str(d2)
 ```
 
-**Resumen de la base**
+#### <span style="color:red">Resumen de la base</span>
 <span style="color:red">La información contenida en la base, contiene similitud con respecto a la base incial. la edad promedio de los estudiantes es de 16 años, utilizan 2 horas promedio de estudio y contienen casi 4 en promedio.</span>
 
 
@@ -151,7 +156,7 @@ str(d2)
 summary(d2)
 ```
 
-### Unión de las bases de datos
+### <span style="color:red"> Unión de las bases de datos </span>
 <span style="color:red">En esta sección se realiza el cruce de información de las dos bases para la consolidación de todos los registros en un solo dataset para el análisis posterior</span>
 
 
@@ -171,7 +176,7 @@ data<-rbind(d1,d2)
 
 ```
 
-**Resumen Nueva data**
+#### Resumen del nuevo data set
 
 ```{r}
 # resumen data
@@ -206,7 +211,7 @@ colnames(data) <- tolower(colnames(data))
 ```
 
 
-### Creación de un identificador único por estudiante
+### <span style="color:red"> Creación de un identificador único por estudiante</span> 
 <span style="color:red">Se creará una variable de identificador único  para cada estudiante, esto se hará concatenando ciertas variables las cuales garanterizan la existencia única y exclusiva del estudiante.</span>
 
 
@@ -238,7 +243,7 @@ Posteriormente se crea una variable que mida el consumo de alcohol global por me
 data$alcohol <- round((data$dalc*5 + data$walc*2)/7,2)
 ```
 
-Se debe identificar los estudiantes repetidos en dos clases, esto con el fin de evitar desbalance de clases
+<span style="color:red">Se debe identificar los estudiantes repetidos en dos clases, esto con el fin de evitar desbalance de clases</span>
 
 ```{r}
 duplicated_rows <- duplicated(data$student_key)
@@ -292,7 +297,7 @@ raw_data <- data
 ```
 
 
-### Codificación de las variables categóricas
+### <span style="color:red"> Codificación de las variables categóricas</span>
 <span style="color:red">Antes de iniciar un análisis descriptivo se codificarán las variables categóricas para tener un mejor entendimiento del comportamiento de los datos.</span>
 
 
@@ -339,7 +344,7 @@ str(data)
 ```
 
 
-Resumen de los datos 
+#### Resumen de los datos 
 
 ```{r}
 summary(data)
@@ -483,7 +488,7 @@ rm(i)
 ```
 
 
-# 2. Calidad de datos 
+# Calidad de datos 
 
 Luegos de haber analizado anterioremente las variables categóricas y numéricas se debe realizar un análisis de detección de ***Null's y datos atípicos*** en el dataset esto con el fin de no generar ruido en los resultados finales.
 
@@ -515,7 +520,7 @@ sapply (data, function(x) (sum(is.null(x))))
 ```
 
 
-## Detección de outliers
+# <span style="color:red">Detectar la existencia de outliers</span>
 
 Se realizarán varias iteraciones para la limpieza de los datos, sin embargo se procederá con mucho detenimiento para no perder información sensible para el modelo.
 
@@ -562,8 +567,8 @@ dim(data_clean1)
 ```
 
 
-**Evidencia de la limpieza de los outliers**
-Efectivamente se presenta una reducción de datos outliers
+### Evidencia de la limpieza de los outliers
+Efectivamente se presenta una reducción de datos outliers 
 
 ```{r}
 boxplot(data_clean1[variables_numericas])
@@ -696,9 +701,7 @@ boxplot(data_clean4[variables_numericas])
 ```
 
 
-Aún se sigue reportando outliers después de las cuarta iteración
-
-Por lo tanto se trata solo los outliers en la variable absences
+Aún se sigue reportando outliers después de las cuarta iteración, por lo tanto se trata solo los outliers en la variable absences
 
 ```{r}
 data_clean <- data
@@ -723,7 +726,7 @@ table(outliers)
 ```
 
 
-Identificación
+#### Identificación
 
 
 
@@ -733,7 +736,7 @@ index <- which( variable %in% outliers)
 ```
 
 
-Se eliminan los registros outliers
+#### Se eliminan los registros outliers
 
 ```{r}
 data_clean<-data_clean[-index,]
@@ -743,14 +746,14 @@ dim(data[data$absences>15,])
 boxplot(data_clean$absences)
 ```
 
-Se evidencia que ya no hay existencia de outliers en esta variable.
+#### Se evidencia que ya no hay existencia de outliers en esta variable.
 
 
 ```{r}
 boxplot(data_clean[variables_numericas])
 ```
 
-Se realiza la limpieza de objetos creados que no se usarán mas adelante.
+#### Se realiza la limpieza de objetos creados que no se usarán mas adelante.
 
 ```{r}
 rm(data_clean1)
@@ -772,7 +775,7 @@ rm(var)
 boxplot(data[variables_numericas])
 ```
 
-Comparación
+#### Comparación para detección de outliers
 
 ```{r}
 boxplot(data$absences)
@@ -784,19 +787,19 @@ boxplot(data_clean[variables_numericas])
 ```
 
 
-#### Resultado final de la limpieza de outliers
+#### <span style="color:red"> Resultado final de la limpieza de outliers </span>
 
 <span style="color:red">Como se pudo observar, los valores atípicos se identifican por medio del boxplot. Se eliminaron outliers en la variable ausencias ya que se identifican valores muy extremos y esto puede afectar el análisis de cluster.</span>
 
 El dataframe final es data_clean
 
 
-# 3. Interpretación de datos
+# <span style="color:red">Entendimiento de datos por medio de visualizaciones</span> 
 
 
 Luego de realizar la limpieza de datos, se procede a la fase de interpretación de los datos.
 
-En esta fase se observará por medio de gráficos, la distribución por clases de los estudiantes. 
+En esta fase se observará por medio de gráficos la distribución por clases de los estudiantes. 
 
 ## Análisis descriptivo de las variables categóricas
 
@@ -856,7 +859,7 @@ for(i in 1:length(variables_discretas)){
 ```
 
 
-### Interpretación de los resultados
+### <span style="color:red"> Interpretación de los resultados</span>
 
 <span style="color:red"> - En las primeras gráficas se observa la distribución por estudiante en cada colegio de portugal, en este caso se evidencia mayor proporción de estudiantes en el colegio Gabriel Pereira, con una participación del 73,9%, mientras que el colegio Mousinho da Silveira tiene una propoción de 26,1%.</span>
 
@@ -908,7 +911,7 @@ for(i in 1:length(variables_discretas)){
 
 
 
-# 4. Análisis univariante y bivariante
+# <span style="color:red">  Análisis estadístico univariante y bivariante</span>
 
 En esta literal, se requiere realizar un análisis con variables únicas y relacionadas entre sí, verificando correlaciones y covarianzas para dar una mejor interpretación de las variables.
 
@@ -954,9 +957,9 @@ corrplot(correlacion, order = "hclust")
 ```
 
 
-**Análisis entre la edad y ausencias**
+#### <span style="color:red"> Análisis entre la edad y ausencias</span>
 
-**age +absences**
+<span style="color:red">**age +absences**</span>
 <span style="color:red">Se evidencia que los estudiantes que estan entre 15 y 17 años no presentan casi ausencias mientras que los estudiantes mayores de 18 años se registran ausencias mayores de 20.</span>
 
 
@@ -987,8 +990,9 @@ plot2
 round(tapply ( data$g3,data$age,mean ),1)
 ```
 
-**Análisis entre edad y notas malas**
-**age + failures**
+#### <span style="color:red">Análisis entre edad y notas malas</span>
+
+<span style="color:red">**age + failures**</span>
 
 <span style="color:red">Se evidencia que no hay una relación fuerte entre la edad y las malas notas en las materias. se presentan algunos casos pero no es significativa la relación.</span>
 
@@ -1046,7 +1050,7 @@ plot7
 round(tapply ( data$g3,data$failures,mean ),1)
 ```
 
-**Relación edad  +  nota final + horas de estudio**
+<span style="color:red">**Relación edad  +  nota final + horas de estudio**</span>
 
 <span style="color:red">Se evidencia una fuerte y clara relación que entre mas horas de estudio las notas serán mejores, pero esta relación esta identificada para edades entre 15 y 17 años de edad.</span>
 
@@ -1092,7 +1096,7 @@ prop.table(X,1)
 ```
 
 
-# 5. Segmentación
+# <span style="color:red">Segmentar los datos: K-Means</span>
 <span style="color:red"> Para realizar una identificación de los estudiantes que posiblemente tienen una relación fuerte con el acohol y de eso depende las notas académicas, se aplicará la técnica de segmentación por medio de K-means para lograr agrupar la población de estudiantes con este comportamiento y que las autoridades académicas empleen métodos de mejora de actitud en cuanto al consumo de alcohol.</span>
 
 
@@ -1103,7 +1107,7 @@ variables_numericas
 ```
 
 
-**Variables cluster**
+#### Variables cluster
 
 ```{r}
 variables_cluster<-c("age","failures","absences","g1","g2","g3")
@@ -1138,7 +1142,7 @@ data_cluster_norm[,c("age")] <- (data_cluster$age-mean(data_cluster$age))/sd(dat
 
 
 
-# K-Means
+# <span style="color:red">K-Means</span>
 
 <span style="color:red">Se sabe que  K-Means (traducido como K-Medias en español), es un método de agrupamiento o clustering.</span>
 
@@ -1146,16 +1150,14 @@ data_cluster_norm[,c("age")] <- (data_cluster$age-mean(data_cluster$age))/sd(dat
 
 <span style="color:red">Para saber si los datos son parecidos o diferentes el algoritmo K-medias utiliza la distancia entre los datos. Las observaciones que se parecen tendrán una menor distancia entre ellas. En general, como medida se utiliza la distancia euclideana aunque también se pueden utilizar otras funciones.</span>
 
-## Funcionamiento del algoritmo
+## <span style="color:red"> Entendimiento del funcionamiento del algoritmo de k-means </span>
 
 <span style="color:red">Los algoritmos de clustering son considerados de aprendizaje no supervisado. Este tipo de algoritmos de aprendizaje no supervisado busca patrones en los datos sin tener una predicción específica como objetivo (no hay variable dependiente). En lugar de tener una salida, los datos solo tienen una entrada que serían las múltiples variables que describen los datos.</span>
 
-<span style="color:red">K-means necesita como dato de entrada el número de grupos en los que vamos a segmentar la población. A partir de este número k de clusters, el algoritmo coloca primero k puntos aleatorios (centroides). Luego asigna a cualquiera de esos puntos todas las muestras con las distancias más pequeñas.
-A continuación, el punto se desplaza a la media de las muestras más cercanas. Esto generará una nueva asignación de muestras, ya que algunas muestras están ahora más cerca de otro centroide. Este proceso se repite de forma iterativa y los grupos se van ajustando hasta que la asignación no cambia más moviendo los puntos. Este resultado final representa el ajuste que maximiza la distancia entre los distintos grupos y minimiza la distancia intragrupo.</span>
+<span style="color:red">K-means necesita como dato de entrada el número de grupos en los que vamos a segmentar la población. A partir de este número k de clusters, el algoritmo coloca primero k puntos aleatorios (centroides). Luego asigna a cualquiera de esos puntos todas las muestras con las distancias más pequeñas.</span>
 
+<span style="color:red">A continuación, el punto se desplaza a la media de las muestras más cercanas. Esto generará una nueva asignación de muestras, ya que algunas muestras están ahora más cerca de otro centroide. Este proceso se repite de forma iterativa y los grupos se van ajustando hasta que la asignación no cambia más moviendo los puntos. Este resultado final representa el ajuste que maximiza la distancia entre los distintos grupos y minimiza la distancia intragrupo.</span>
 
-
-Para este caso se utiliza k-means con k=3 y se visualiza algunos resultados.
 
 - los centros de grupos
 - la suma de cuadrados totales,
@@ -1179,9 +1181,9 @@ clus2_k3$betweenss
 ```
 
 
-# Elección del número de clústers
+# <span style="color:red">Elección del número de clústers</span>
 
-Se buscará el k que haga que los individuos que pertenecen a un mismo grupo sean lo mas homogéneo posible y los individuos pertenecientes a distintos grupos sean lo mas heterogéneos posible.
+<span style="color:red">Luego de entender el concepto de la metodología K- means, a partir de los datos se buscará el k que haga que los individuos que pertenecen a un mismo grupo sean lo mas homogéneo posible y los individuos pertenecientes a distintos grupos sean lo mas heterogéneos posible</span>
 
 
 ```{r}
@@ -1201,7 +1203,7 @@ plot(1:10, tw, type="l", xlab="Número de grupos",ylab="Sumas de cuadrados dentr
 ```
 
 
-**Se unen los dos gráficos para la comparación**
+### Se unen los dos gráficos para la comparación
 
 ```{r}
 {
@@ -1219,9 +1221,9 @@ Se evidencia que para k=4 se obtiene un punto de equilibrio entre el número de 
 
 
 
-# Segmentación óptima
+# <span style="color:red">Segmentación óptima</span>
 
-Se calcula la segmentación para k= 4
+<span style="color:red">Según el modelo, indica que el número óptimo de clústers es 4 por lo tanto se procede a realizar la clasificación con los individuos seleccionados</span>
 
 
 ```{r}
@@ -1243,7 +1245,7 @@ clus2_k4$betweenss
 
 
 
-**Asignación de clústers**
+## Asignación de clústers
 
 ```{r}
 names(data_cluster_norm)<-c("age_st","failures_st","absences_st", "g1_st", "g2_st", "g3_st") 
@@ -1254,7 +1256,7 @@ names(data_cluster_result)[14]<-"alcohol"
 head(data_cluster_result)
 ```
 
-**Gráficos de clúster**
+## Gráficos de clúster
 
 
 ```{r}
@@ -1327,7 +1329,7 @@ G
 
 
 
-## 6. Conclusion e interpretación final
+## <span style="color:red">Conclusion e interpretación final</span>
 
 
 <span style="color:red"> - Se identificaron 4 posibles clústers de estudiantes con diferentes características que pueden afectar el rendimiento académico y luego de identificarlo se deben realizar estrategias de adopción de nuevas actividades para mejorar las notas.</span>
